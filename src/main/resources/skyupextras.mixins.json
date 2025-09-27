@@ -1,0 +1,14 @@
+{
+	"required": true,
+	"package": "net.galgan.skyupextras.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"mixins": [
+		"HandledScreenAccess"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"overwrites": {
+		"requireAnnotations": true
+	}
+}
