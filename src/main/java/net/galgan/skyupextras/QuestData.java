@@ -1,7 +1,4 @@
 package net.galgan.skyupextras;
-
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
 import net.minecraft.text.Text;
 
 import java.util.Set;
