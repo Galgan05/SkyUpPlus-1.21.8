@@ -2,7 +2,7 @@ package net.galgan.skyupextras;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
-import org.w3c.dom.Text;
+import net.minecraft.text.Text;
 
 import java.util.Set;
 
@@ -235,4 +235,12 @@ public class QuestData {
     );
 
     public static final String completedLore = "LoreComponent[lines=[empty, empty[siblings=[literal{▪ }[style={color=dark_gray,bold,!italic,!underlined,!strikethrough,!obfuscated}], literal{Zadanie ukończone!}[style={color=green,!bold,!italic}]]], empty], styledLines=[empty[style={color=dark_purple,italic}], empty[style={color=dark_purple,italic}, siblings=[literal{▪ }[style={color=dark_gray,bold,!italic,!underlined,!strikethrough,!obfuscated}], literal{Zadanie ukończone!}[style={color=green,!bold,!italic}]]], empty[style={color=dark_purple,italic}]]]";
+
+    public static final Text questSelectedPrefix = Text.empty()
+            .append(Text.literal("Sky").styled(s -> s.withColor(0x00FFFF).withBold(true)))
+            .append(Text.literal("UP").styled(s -> s.withColor(0xFFFFFF).withBold(true)))
+            .append(Text.literal("+").styled(s -> s.withColor(0xFFFF55).withBold(true)))
+            .append(Text.literal(" ").styled(s -> s.withColor(0xFFD700).withBold(true)))
+            .append(Text.literal("» ").styled(s -> s.withColor(0x555555).withBold(true)))
+            .append(Text.literal("Wybrano zadanie: ").styled(s -> s.withColor(0x00AAAA)));
 }

@@ -8,6 +8,8 @@ import net.minecraft.component.type.LoreComponent;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
 
+import java.util.List;
+
 public class DetectQuest {
 
     public static void questDetection() {
@@ -28,10 +30,14 @@ public class DetectQuest {
                 if (questLore == null) return;
                 if (QuestData.completedLore.equals(questLore.toString())) return;
                 if (!QuestData.questNames.contains(slot.getStack().getName().getString())) return;
-                //If every check passed, get the name and lore of the item
-                String questName = slot.getStack().getName().getString();
-
-                client.inGameHud.getChatHud().addMessage(net.minecraft.text.Text.literal("[SkyUpExtras] Wybrano zadanie: " + questName));
+                //If every check passed, print out the name of the quest
+                Text questName = slot.getStack().getName();
+                client.inGameHud.getChatHud().addMessage(Text.empty().append(QuestData.questSelectedPrefix).append(questName));
+                //Get the filtered description of the quest
+                List<Text> filteredDescription = FilterQuestLore.loreFilter(questLore);
+                for (Text line : filteredDescription) {
+                    client.inGameHud.getChatHud().addMessage(line);
+                }
 
             });
         });
