@@ -1,29 +1,29 @@
 {
 	"schemaVersion": 1,
-	"id": "skyupextras",
+	"id": "skyupplus",
 	"version": "${version}",
-	"name": "SkyUpExtras",
+	"name": "SkyUpPlus",
 	"description": "This is an example description! Tell everyone what your mod is about!",
 	"authors": [
 		"Me!"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "",
+		"sources": "https://github.com/Galgan05/SkyUpPlus-1.21.8"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/skyupextras/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"client": [
-          "net.galgan.skyupextras.SkyUpExtrasClient"
+          "net.galgan.skyupplus.SkyUpPlusClient"
 		],
 		"fabric-datagen": [
-			"net.galgan.skyupextras.SkyUpExtrasDataGenerator"
+			"net.galgan.skyupplus.SkyUpPlusDataGenerator"
 		]
 	},
 	"mixins": [
-		"skyupextras.mixins.json"
+		"skyupplus.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.17.2",

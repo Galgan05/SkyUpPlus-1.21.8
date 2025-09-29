@@ -1,4 +1,4 @@
-package net.galgan.skyupextras;
+package net.galgan.skyupplus;
 import net.minecraft.text.Text;
 
 import java.util.Set;

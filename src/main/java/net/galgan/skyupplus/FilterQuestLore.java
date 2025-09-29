@@ -1,4 +1,4 @@
-package net.galgan.skyupextras;
+package net.galgan.skyupplus;
 
 import net.minecraft.component.type.LoreComponent;
 import net.minecraft.text.Text;

@@ -1,4 +1,4 @@
-package net.galgan.skyupextras;
+package net.galgan.skyupplus;
 
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
@@ -70,7 +70,7 @@ public class DetectQuest {
         HudElementRegistry.attachElementBefore(
                 VanillaHudElements.CHAT,
                 Identifier.of("skyupextras", "quest_display"),
-                QuestRenderer::render // (DrawContext ctx, RenderTickCounter counter)
+                QuestRenderer::render
         );
     }
 }

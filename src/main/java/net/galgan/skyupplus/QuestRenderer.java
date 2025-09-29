@@ -1,4 +1,4 @@
-package net.galgan.skyupextras;
+package net.galgan.skyupplus;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;

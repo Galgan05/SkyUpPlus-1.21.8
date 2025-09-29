@@ -1,4 +1,4 @@
-package net.galgan.skyupextras.mixin;
+package net.galgan.skyupplus.mixin;
 
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.screen.slot.Slot;

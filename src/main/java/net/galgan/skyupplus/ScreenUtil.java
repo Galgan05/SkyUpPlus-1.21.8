@@ -1,6 +1,6 @@
-package net.galgan.skyupextras;
+package net.galgan.skyupplus;
 
-import net.galgan.skyupextras.mixin.HandledScreenAccess;
+import net.galgan.skyupplus.mixin.HandledScreenAccess;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.screen.slot.Slot;
 
