@@ -16,7 +16,7 @@ public class FilterQuestLore {
             String s = line.getString().trim();
 
             if (s.startsWith("▪")) {
-                if (s.startsWith("▪ Opis") || s.startsWith("▪ Za") || s.startsWith("▪ LPM")) {
+                if (s.startsWith("▪ Opis") || s.startsWith("▪ Za ukończenie") || s.startsWith("▪ LPM") || s.startsWith("▪ Uwaga") || s.startsWith("▪ Kategoria")) {
                     addNext = false;
                 } else {
                     output.add(line);
@@ -26,7 +26,6 @@ public class FilterQuestLore {
                 if (addNext) output.add(line);
             }
         }
-        output.removeLast();
         return output;
     }
 }
