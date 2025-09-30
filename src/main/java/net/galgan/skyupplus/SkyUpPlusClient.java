@@ -7,6 +7,11 @@ public class SkyUpPlusClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-        DetectQuest.questDetection();
+        ConfigGenerator.load();
+        Quests.questHandler();
+        Fishing.fishingStats();
+        Cooldown.cooldownNotifier();
+        Commands.registerCommands();
+        HUD.renderHud();
 	}
 }

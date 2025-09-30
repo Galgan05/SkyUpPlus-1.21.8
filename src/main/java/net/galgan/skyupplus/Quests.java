@@ -1,9 +1,96 @@
 package net.galgan.skyupplus;
+
+import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
+import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
+import net.galgan.skyupplus.mixin.HandledScreenAccess;
+import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.LoreComponent;
+import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
-public class QuestData {
+public class Quests {
+    public static Text questName;
+    public static List<Text> filteredDescription;
+    public static boolean isQuestActive;
+
+    public static void questHandler() {
+        ScreenEvents.BEFORE_INIT.register((client, screen, w, h) -> {
+            //Check if you're inside a container that's valid
+            if (!(screen instanceof HandledScreen<?> handled)) return;
+            if (!containerTitles.contains(handled.getTitle().getString())) return;
+
+            // Register per-screen listeners
+            ScreenMouseEvents.beforeMouseClick(screen).register((s, mouseX, mouseY, button) -> {
+                //Check if the button clicked was a middle button
+                if (button != 2) return;
+                //Check if you clicked a valid slot
+                Slot slot = getSlotAt(handled, mouseX, mouseY);
+                if (slot == null) {
+                    questName = null;
+                    filteredDescription = null;
+                    isQuestActive = false;
+                    return;
+                }
+                //Check if the quest is valid
+                LoreComponent questLore = slot.getStack().get(DataComponentTypes.LORE);
+
+                if (questLore == null) {
+                    questName = null;
+                    filteredDescription = null;
+                    isQuestActive = false;
+                    return;
+                }
+                if (completedLore.equals(questLore.toString())) {
+                    questName = null;
+                    filteredDescription = null;
+                    isQuestActive = false;
+                    return;
+                }
+                if (!questNames.contains(slot.getStack().getName().getString())) {
+                    questName = null;
+                    filteredDescription = null;
+                    isQuestActive = false;
+                    return;
+                }
+                //If every check passed, print out the name of the quest
+                isQuestActive = true;
+                questName = slot.getStack().getName();
+                Chat.send(Text.empty().append(Text.literal("Wybrano zadanie: ").styled(style -> style.withColor(0x00AAAA))).append(questName));
+                //Get the filtered description of the quest
+                filteredDescription = loreFilter(questLore);
+            });
+        });
+    }
+
+    public static Slot getSlotAt(HandledScreen<?> screen, double x, double y) {
+        return ((HandledScreenAccess) screen).invokeGetSlotAt(x, y);
+    }
+
+    public static List<Text> loreFilter(LoreComponent questLore) {
+        List<Text> output = new ArrayList<>();
+        boolean addNext = false;
+
+        for (Text line : questLore.lines()) {
+            String s = line.getString().trim();
+
+            if (s.startsWith("▪")) {
+                if (s.startsWith("▪ Opis") || s.startsWith("▪ Za ukończenie") || s.startsWith("▪ LPM") || s.startsWith("▪ Uwaga") || s.startsWith("▪ Kategoria")) {
+                    addNext = false;
+                } else {
+                    output.add(line);
+                    addNext = true;
+                }
+            } else {
+                if (addNext) output.add(line);
+            }
+        }
+        return output;
+    }
 
     public static final Set<String> containerTitles = Set.of(
             "\uE003\uE150\uE002Wyzwania",
@@ -232,12 +319,4 @@ public class QuestData {
     );
 
     public static final String completedLore = "LoreComponent[lines=[empty, empty[siblings=[literal{▪ }[style={color=dark_gray,bold,!italic,!underlined,!strikethrough,!obfuscated}], literal{Zadanie ukończone!}[style={color=green,!bold,!italic}]]], empty], styledLines=[empty[style={color=dark_purple,italic}], empty[style={color=dark_purple,italic}, siblings=[literal{▪ }[style={color=dark_gray,bold,!italic,!underlined,!strikethrough,!obfuscated}], literal{Zadanie ukończone!}[style={color=green,!bold,!italic}]]], empty[style={color=dark_purple,italic}]]]";
-
-    public static final Text questSelectedPrefix = Text.empty()
-            .append(Text.literal("Sky").styled(s -> s.withColor(0x00FFFF).withBold(true)))
-            .append(Text.literal("UP").styled(s -> s.withColor(0xFFFFFF).withBold(true)))
-            .append(Text.literal("+").styled(s -> s.withColor(0xFFFF55).withBold(true)))
-            .append(Text.literal(" ").styled(s -> s.withColor(0xFFD700).withBold(true)))
-            .append(Text.literal("» ").styled(s -> s.withColor(0x555555).withBold(true)))
-            .append(Text.literal("Wybrano zadanie: ").styled(s -> s.withColor(0x00AAAA)));
 }
