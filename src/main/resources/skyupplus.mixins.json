@@ -3,8 +3,10 @@
 	"package": "net.galgan.skyupplus.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"HandledScreenAccess"
+		"HandledScreenAccess",
+        "BossBarHudAccessor"
 	],
+
 	"injectors": {
 		"defaultRequire": 1
 	},
