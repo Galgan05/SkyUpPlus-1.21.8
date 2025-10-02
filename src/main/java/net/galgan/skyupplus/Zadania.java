@@ -8,19 +8,21 @@ import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.LoreComponent;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class Quests {
+public class Zadania {
     public static Text questName;
     public static List<Text> filteredDescription;
     public static boolean isQuestActive;
 
-    public static void questHandler() {
+    public static void handlerZadan() {
         ScreenEvents.BEFORE_INIT.register((client, screen, w, h) -> {
             //Check if you're inside a container that's valid
+            if(!Config.INSTANCE.toggleZadania) return;
             if (!(screen instanceof HandledScreen<?> handled)) return;
             if (!containerTitles.contains(handled.getTitle().getString())) return;
 
@@ -60,7 +62,7 @@ public class Quests {
                 //If every check passed, print out the name of the quest
                 isQuestActive = true;
                 questName = slot.getStack().getName();
-                Chat.send(Text.empty().append(Text.literal("Wybrano zadanie: ").styled(style -> style.withColor(0x00AAAA))).append(questName));
+                Chat.send(Text.empty().append(Text.literal("Wybrano zadanie: ").formatted(Formatting.DARK_AQUA)).append(questName));
                 //Get the filtered description of the quest
                 filteredDescription = loreFilter(questLore);
             });

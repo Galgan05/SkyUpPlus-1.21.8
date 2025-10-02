@@ -7,17 +7,18 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
 import java.util.List;
 
 public class HUD {
 
-    public static void renderHud() {
+    public static void renderHUD() {
         // Render just before the chat layer so it’s visible above most vanilla elements.
         HudElementRegistry.attachElementBefore(
                 VanillaHudElements.CHAT,
-                Identifier.of("skyupextras", "quest_display"),
+                Identifier.of("skyupplus", "hud"),
                 HUD::render
         );
     }
@@ -27,14 +28,14 @@ public class HUD {
         TextRenderer tr = MinecraftClient.getInstance().textRenderer;
 
         //Set the default offset
-        int xOffset = 5;
-        int yOffset = 5;
+        int xOffset = Config.INSTANCE.offsetX;
+        int yOffset = Config.INSTANCE.offsetY;
 
         //Check if there is a quest active
-        if (Quests.isQuestActive) {
+        if (Zadania.isQuestActive && Config.INSTANCE.toggleZadania) {
             //Get the quest name and description
-            Text questName = Quests.questName;
-            List<Text> filteredDescription = Quests.filteredDescription;
+            Text questName = Zadania.questName;
+            List<Text> filteredDescription = Zadania.filteredDescription;
 
             //Draw the quest on screen
             context.drawTextWithShadow(tr, questName, xOffset, yOffset,0xFFFFFFFF);
@@ -45,57 +46,76 @@ public class HUD {
             }
         }
         //Check if fishing is active
-        if (Fishing.isFishing && ConfigGenerator.togglerybak) {
+        if (Rybak.isFishing && Config.INSTANCE.toggleRybak) {
             //Draw the fishing headers
-            context.drawTextWithShadow(tr, Text.empty()
-                    .append(Text.literal("» ").styled(s -> s.withColor(0x5555FF)))
-                    .append(Text.literal("Rybak").styled(s -> s.withColor(0x00AAAA).withBold(true)))
-                    .append(Text.literal(" «").styled(s -> s.withColor(0x5555FF))), xOffset, yOffset,0xFFFFFFFF);
-            yOffset += tr.fontHeight + 2;
-            context.drawTextWithShadow(tr, Text.empty()
-                    .append(Text.literal("▪ ").styled(s -> s.withColor(0x555555).withBold(true)))
-                    .append(Text.literal("Wyłowione ryby:").styled(s -> s.withColor(0x55FFFF))), xOffset, yOffset,0xFFFFFFFF);
-            yOffset += tr.fontHeight + 2;
+            if (Config.INSTANCE.toggleNiewielka || Config.INSTANCE.togglePrzecietna || Config.INSTANCE.toggleWymiarowa || Config.INSTANCE.toggleOgromna || Config.INSTANCE.toggleMamucia || Config.INSTANCE.toggleSuma || Config.INSTANCE.toggleZarobek) {
+                context.drawTextWithShadow(tr, Text.empty()
+                        .append(Text.literal("» ").formatted(Formatting.BLUE))
+                        .append(Text.literal("Rybak").formatted(Formatting.DARK_AQUA, Formatting.BOLD))
+                        .append(Text.literal(" «").formatted(Formatting.BLUE)), xOffset, yOffset,0xFFFFFFFF);
+                yOffset += tr.fontHeight + 2;
+            }
+            if (Config.INSTANCE.toggleNiewielka || Config.INSTANCE.togglePrzecietna || Config.INSTANCE.toggleWymiarowa || Config.INSTANCE.toggleOgromna || Config.INSTANCE.toggleMamucia || Config.INSTANCE.toggleSuma) {
+                context.drawTextWithShadow(tr, Text.empty()
+                        .append(Text.literal("▪ ").formatted(Formatting.DARK_GRAY, Formatting.BOLD))
+                        .append(Text.literal("Wyłowione ryby:").formatted(Formatting.AQUA)), xOffset, yOffset,0xFFFFFFFF);
+                yOffset += tr.fontHeight + 2;
+            }
             //Draw the numbers for every fish tier
-            context.drawTextWithShadow(tr, Text.empty()
-                    .append(Text.literal("  » ").styled(s -> s.withColor(0x5555FF)))
-                    .append(Text.literal("Niewielka: ").styled(s -> s.withColor(0xAAAAAA)))
-                    .append(Text.literal(String.valueOf(ConfigGenerator.niewielka)).styled(s -> s.withColor(0xAAAAAA))), xOffset, yOffset,0xFFFFFFFF);
-            yOffset += tr.fontHeight + 2;
-            context.drawTextWithShadow(tr, Text.empty()
-                    .append(Text.literal("  » ").styled(s -> s.withColor(0x5555FF)))
-                    .append(Text.literal("Przeciętna: ").styled(s -> s.withColor(0xFFFF55)))
-                    .append(Text.literal(String.valueOf(ConfigGenerator.przecietna)).styled(s -> s.withColor(0xFFFF55))), xOffset, yOffset,0xFFFFFFFF);
-            yOffset += tr.fontHeight + 2;
-            context.drawTextWithShadow(tr, Text.empty()
-                    .append(Text.literal("  » ").styled(s -> s.withColor(0x5555FF)))
-                    .append(Text.literal("Wymiarowa: ").styled(s -> s.withColor(0x55FF55)))
-                    .append(Text.literal(String.valueOf(ConfigGenerator.wymiarowa)).styled(s -> s.withColor(0x55FF55))), xOffset, yOffset,0xFFFFFFFF);
-            yOffset += tr.fontHeight + 2;
-            context.drawTextWithShadow(tr, Text.empty()
-                    .append(Text.literal("  » ").styled(s -> s.withColor(0x5555FF)))
-                    .append(Text.literal("Ogromna: ").styled(s -> s.withColor(0xFFAA00)))
-                    .append(Text.literal(String.valueOf(ConfigGenerator.ogromna)).styled(s -> s.withColor(0xFFAA00))), xOffset, yOffset,0xFFFFFFFF);
-            yOffset += tr.fontHeight + 2;
-            context.drawTextWithShadow(tr, Text.empty()
-                    .append(Text.literal("  » ").styled(s -> s.withColor(0x5555FF)))
-                    .append(Text.literal("Mamucia: ").styled(s -> s.withColor(0xAA00AA)))
-                    .append(Text.literal(String.valueOf(ConfigGenerator.mamucia)).styled(s -> s.withColor(0xAA00AA))), xOffset, yOffset,0xFFFFFFFF);
-            yOffset += tr.fontHeight + 2;
-            context.drawTextWithShadow(tr, Text.empty()
-                    .append(Text.literal("  » ").styled(s -> s.withColor(0x5555FF)))
-                    .append(Text.literal("Suma: ").styled(s -> s.withColor(0xFFFFFF)))
-                    .append(Text.literal(String.valueOf(ConfigGenerator.sumaryb)).styled(s -> s.withColor(0xFFFFFF))), xOffset, yOffset,0xFFFFFFFF);
-            yOffset += tr.fontHeight + 2;
-            context.drawTextWithShadow(tr, Text.empty()
-                    .append(Text.literal("▪ ").styled(s -> s.withColor(0x555555).withBold(true)))
-                    .append(Text.literal("Zarobek z ryb:").styled(s -> s.withColor(0x55FFFF))), xOffset, yOffset,0xFFFFFFFF);
-            yOffset += tr.fontHeight + 2;
-            context.drawTextWithShadow(tr, Text.empty()
-                    .append(Text.literal("  » ").styled(s -> s.withColor(0x5555FF)))
-                    .append(Text.literal(String.valueOf(ConfigGenerator.zarobekzryb)).append(" SC").styled(s -> s.withColor(0xFFFF55))), xOffset, yOffset,0xFFFFFFFF);
-            yOffset += tr.fontHeight + 2;
-
+            if (Config.INSTANCE.toggleNiewielka) {
+                context.drawTextWithShadow(tr, Text.empty()
+                        .append(Text.literal("» ").formatted(Formatting.BLUE))
+                        .append(Text.literal("Niewielka: ").formatted(Formatting.GRAY))
+                        .append(Text.literal(String.valueOf(Config.INSTANCE.niewielka)).formatted(Formatting.GRAY)), xOffset, yOffset,0xFFFFFFFF);
+                yOffset += tr.fontHeight + 2;
+            }
+            if (Config.INSTANCE.togglePrzecietna) {
+                context.drawTextWithShadow(tr, Text.empty()
+                        .append(Text.literal("» ").formatted(Formatting.BLUE))
+                        .append(Text.literal("Przeciętna: ").formatted(Formatting.YELLOW))
+                        .append(Text.literal(String.valueOf(Config.INSTANCE.przecietna)).formatted(Formatting.YELLOW)), xOffset, yOffset,0xFFFFFFFF);
+                yOffset += tr.fontHeight + 2;
+            }
+            if (Config.INSTANCE.toggleWymiarowa) {
+                context.drawTextWithShadow(tr, Text.empty()
+                        .append(Text.literal("» ").formatted(Formatting.BLUE))
+                        .append(Text.literal("Wymiarowa: ").formatted(Formatting.GREEN))
+                        .append(Text.literal(String.valueOf(Config.INSTANCE.wymiarowa)).formatted(Formatting.GREEN)), xOffset, yOffset,0xFFFFFFFF);
+                yOffset += tr.fontHeight + 2;
+            }
+            if (Config.INSTANCE.toggleOgromna) {
+                context.drawTextWithShadow(tr, Text.empty()
+                        .append(Text.literal("» ").formatted(Formatting.BLUE))
+                        .append(Text.literal("Ogromna: ").formatted(Formatting.GOLD))
+                        .append(Text.literal(String.valueOf(Config.INSTANCE.ogromna)).formatted(Formatting.GOLD)), xOffset, yOffset,0xFFFFFFFF);
+                yOffset += tr.fontHeight + 2;
+            }
+            if (Config.INSTANCE.toggleMamucia) {
+                context.drawTextWithShadow(tr, Text.empty()
+                        .append(Text.literal("» ").formatted(Formatting.BLUE))
+                        .append(Text.literal("Mamucia: ").formatted(Formatting.DARK_PURPLE))
+                        .append(Text.literal(String.valueOf(Config.INSTANCE.mamucia)).formatted(Formatting.DARK_PURPLE)), xOffset, yOffset,0xFFFFFFFF);
+                yOffset += tr.fontHeight + 2;
+            }
+            if (Config.INSTANCE.toggleSuma) {
+                context.drawTextWithShadow(tr, Text.empty()
+                        .append(Text.literal("» ").formatted(Formatting.BLUE))
+                        .append(Text.literal("Suma: ").formatted(Formatting.WHITE))
+                        .append(Text.literal(String.valueOf(Config.INSTANCE.sumaryb)).formatted(Formatting.WHITE)), xOffset, yOffset,0xFFFFFFFF);
+                yOffset += tr.fontHeight + 2;
+            }
+            if (Config.INSTANCE.toggleZarobek) {
+                context.drawTextWithShadow(tr, Text.empty()
+                        .append(Text.literal("▪ ").formatted(Formatting.DARK_GRAY, Formatting.BOLD))
+                        .append(Text.literal("Zarobek z ryb:").formatted(Formatting.AQUA)), xOffset, yOffset,0xFFFFFFFF);
+                yOffset += tr.fontHeight + 2;
+            }
+            if (Config.INSTANCE.toggleZarobek) {
+                context.drawTextWithShadow(tr, Text.empty()
+                        .append(Text.literal("» ").formatted(Formatting.BLUE))
+                        .append(Text.literal(String.valueOf(Config.INSTANCE.zarobekzryb)).append(" SC").formatted(Formatting.YELLOW)), xOffset, yOffset,0xFFFFFFFF);
+                yOffset += tr.fontHeight + 2;
+            }
         }
     }
 }

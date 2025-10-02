@@ -3,24 +3,24 @@
 	"id": "skyupplus",
 	"version": "${version}",
 	"name": "SkyUpPlus",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Mod na serwer SkyUP.pl mający na celu urozmaicenie rozgrywki.",
 	"authors": [
-		"Me!"
+		"Galgan"
 	],
 	"contact": {
 		"homepage": "",
 		"sources": "https://github.com/Galgan05/SkyUpPlus-1.21.8"
 	},
 	"license": "CC0-1.0",
-	"icon": "assets/skyupextras/icon.png",
-	"environment": "*",
+	"icon": "assets/skyupplus/icon.png",
+	"environment": "client",
 	"entrypoints": {
 		"client": [
           "net.galgan.skyupplus.SkyUpPlusClient"
 		],
-		"fabric-datagen": [
-			"net.galgan.skyupplus.SkyUpPlusDataGenerator"
-		]
+        "modmenu": [
+            "net.galgan.skyupplus.ModMenu"
+        ]
 	},
 	"mixins": [
 		"skyupplus.mixins.json"

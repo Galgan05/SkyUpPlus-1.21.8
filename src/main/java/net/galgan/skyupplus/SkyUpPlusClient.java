@@ -7,11 +7,10 @@ public class SkyUpPlusClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-        ConfigGenerator.load();
-        Quests.questHandler();
-        Fishing.fishingStats();
-        Cooldown.cooldownNotifier();
-        Commands.registerCommands();
-        HUD.renderHud();
+        Config.load();
+        Zadania.handlerZadan();
+        Rybak.handlerRybaka();
+        Umiejetnosci.handlerUmiejetnosci();
+        HUD.renderHUD();
 	}
 }
