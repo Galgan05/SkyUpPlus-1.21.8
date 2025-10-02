@@ -94,6 +94,8 @@ public class Umiejetnosci {
     }
 
     private static void playCountdown(MinecraftClient client, String title, UUID id) {
+        if (client.player == null) return;
+
         int minutes = 0, seconds = 0;
 
         Matcher mMin = Pattern.compile("(\\d+)\\s*min").matcher(title);

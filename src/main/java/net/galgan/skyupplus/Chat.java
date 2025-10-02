@@ -3,6 +3,7 @@ package net.galgan.skyupplus;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.ChatHud;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 
 public final class Chat {
     private Chat() {}
@@ -15,10 +16,10 @@ public final class Chat {
             if (client.inGameHud == null) return;
             ChatHud chat = client.inGameHud.getChatHud();
             if (chat != null) chat.addMessage(Text.empty()
-                    .append(Text.literal("Sky").styled(style -> style.withColor(0x55FFFF).withBold(true)))
-                    .append(Text.literal("UP").styled(style -> style.withColor(0xFFFFFF).withBold(true)))
-                    .append(Text.literal("+ ").styled(style -> style.withColor(0xFFFF55).withBold(true)))
-                    .append(Text.literal("» ").styled(style -> style.withColor(0x555555).withBold(true)))
+                    .append(Text.literal("Sky").formatted(Formatting.AQUA, Formatting.BOLD))
+                    .append(Text.literal("UP").formatted(Formatting.WHITE, Formatting.BOLD))
+                    .append(Text.literal("+ ").formatted(Formatting.LIGHT_PURPLE, Formatting.BOLD))
+                    .append(Text.literal("» ").formatted(Formatting.DARK_GRAY, Formatting.BOLD))
                     .append(text));
         };
 

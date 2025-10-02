@@ -22,15 +22,53 @@ public final class Ustawienia {
                         .append(Text.literal("» ").formatted(Formatting.DARK_GRAY, Formatting.BOLD))
                         .append(Text.literal("Ustawienia").formatted(Formatting.YELLOW, Formatting.BOLD)));
 
-        // Ensure we save file when user clicks Done.
-        builder.setSavingRunnable(Config::save);
-
-
         ConfigEntryBuilder eb = builder.entryBuilder();
+        ConfigCategory hud = builder.getOrCreateCategory(Text.literal("HUD").formatted(Formatting.GREEN, Formatting.BOLD));
         ConfigCategory zadania = builder.getOrCreateCategory(Text.literal("Zadania").formatted(Formatting.GOLD, Formatting.BOLD));
         ConfigCategory rybak = builder.getOrCreateCategory(Text.literal("Rybak").formatted(Formatting.DARK_AQUA, Formatting.BOLD));
         ConfigCategory umiejetnosci = builder.getOrCreateCategory(Text.literal("Umiejętności").formatted(Formatting.LIGHT_PURPLE, Formatting.BOLD));
 
+        hud.addEntry(
+                eb.startBooleanToggle(Text.literal("Wyświetlanie HUDu"), Config.INSTANCE.toggleHud)
+                        .setDefaultValue(true)
+                        .setTooltip(
+                                Text.literal("Wyświetlanie HUDu").formatted(Formatting.WHITE, Formatting.BOLD),
+                                Text.literal("Włącza/Wyłącza wyświetlanie HUDu").formatted(Formatting.GRAY),
+                                Text.literal("UWAGA! Jeżeli to wyłączysz to nic w kateoriach zadania i rybak nie będzie działać").formatted(Formatting.RED)
+                        )
+                        .setSaveConsumer(v -> Config.INSTANCE.toggleHud = v)
+                        .build()
+        );
+
+        hud.addEntry(
+                eb.startIntField(Text.literal("Przesunięcie w poziomie"), Config.INSTANCE.offsetX)
+                        .setDefaultValue(5)
+                        .setTooltip(
+                                Text.literal("Przesunięcie w poziomie").formatted(Formatting.WHITE, Formatting.BOLD),
+                                Text.literal("Przesuwa wyświetlanie HUDu w poziomie (0-512px)").formatted(Formatting.GRAY)
+                        )
+                        .setSaveConsumer(v -> {
+                            if (v < 0) v = 0;
+                            if (v > 512) v = 512;
+                            Config.INSTANCE.offsetX = v;
+                        })
+                        .build()
+        );
+
+        hud.addEntry(
+                eb.startIntField(Text.literal("Przesunięcie w pionie"), Config.INSTANCE.offsetY)
+                        .setDefaultValue(5)
+                        .setTooltip(
+                                Text.literal("Przesunięcie w pionie").formatted(Formatting.WHITE, Formatting.BOLD),
+                                Text.literal("Przesuwa wyświetlanie HUDu w pionie (0-256px)").formatted(Formatting.GRAY)
+                        )
+                        .setSaveConsumer(v -> {
+                            if (v < 0) v = 0;
+                            if (v > 256) v = 256;
+                            Config.INSTANCE.offsetY = v;
+                        })
+                        .build()
+        );
 
         zadania.addEntry(
                 eb.startBooleanToggle(Text.literal("Wyświetlanie zadań"), Config.INSTANCE.toggleZadania)
@@ -48,36 +86,6 @@ public final class Ustawienia {
         );
 
         zadania.addEntry(
-                eb.startIntField(Text.literal("Przesunięcie w poziomie"), Config.INSTANCE.offsetX)
-                        .setDefaultValue(5)
-                        .setTooltip(
-                                Text.literal("Przesunięcie w poziomie").formatted(Formatting.WHITE, Formatting.BOLD),
-                                Text.literal("Przesuwa wyświetlanie HUDu w poziomie (0-512px)").formatted(Formatting.GRAY)
-                        )
-                        .setSaveConsumer(v -> {
-                            if (v < 0) v = 0;
-                            if (v > 512) v = 512;
-                            Config.INSTANCE.offsetX = v;
-                        })
-                        .build()
-        );
-
-        zadania.addEntry(
-                eb.startIntField(Text.literal("Przesunięcie w pionie"), Config.INSTANCE.offsetY)
-                        .setDefaultValue(5)
-                        .setTooltip(
-                                Text.literal("Przesunięcie w pionie").formatted(Formatting.WHITE, Formatting.BOLD),
-                                Text.literal("Przesuwa wyświetlanie HUDu w pionie (0-256px)").formatted(Formatting.GRAY)
-                        )
-                        .setSaveConsumer(v -> {
-                            if (v < 0) v = 0;
-                            if (v > 256) v = 256;
-                            Config.INSTANCE.offsetY = v;
-                        })
-                        .build()
-        );
-
-        zadania.addEntry(
                 eb.startBooleanToggle(Text.literal("Automatyczne zamykanie zadań"), Config.INSTANCE.zamykajZadania)
                         .setDefaultValue(true)
                         .setTooltip(
@@ -89,21 +97,20 @@ public final class Ustawienia {
         );
 
         rybak.addEntry(
-                eb.startBooleanToggle(Text.literal("Statystyki rybaka"), Config.INSTANCE.toggleRybak)
-                        .setDefaultValue(true)
+                eb.startEnumSelector(Text.literal("Wyświetlanie statystyk"), Config.WyswietlanieRybaka.class, Config.INSTANCE.wyswietlanieRybaka)
+                        .setDefaultValue(Config.WyswietlanieRybaka.WEDKA)
                         .setTooltip(
-                                Text.literal("Wyświetlanie statystyk rybaka").formatted(Formatting.WHITE, Formatting.BOLD),
-                                Text.literal("Pozwala na wyświetlanie statystyk rybaka w lewej górnej części ekranu").formatted(Formatting.GRAY),
-                                Text.literal("Statystyki wyświetlają się automatycznie, kiedy trzymasz w ręku wędkę").formatted(Formatting.GRAY),
-                                Text.literal("Co dokładnie wyświetla się w statystykach możesz wybrać poniżej").formatted(Formatting.GRAY)
-                                )
-                        .setSaveConsumer(v -> Config.INSTANCE.toggleRybak = v)
+                                Text.literal("Wyświetlanie statystyk").formatted(Formatting.WHITE, Formatting.BOLD),
+                                Text.literal("Wybierz kiedy mają się wyświetlać staystyki rybaka").formatted(Formatting.GRAY)
+                        )
+                        .setEnumNameProvider(e -> Text.literal(((Config.WyswietlanieRybaka) e).label()))
+                        .setSaveConsumer(v -> Config.INSTANCE.wyswietlanieRybaka = v)
                         .build()
         );
 
-        var wyswietlanieStatystyk = eb.startSubCategory(Text.literal("Wyświetlanie statystyk")).setExpanded(true);
+        var wybierzStatystyki = eb.startSubCategory(Text.literal("Wybierz statystyki")).setExpanded(true);
 
-        wyswietlanieStatystyk.add(
+        wybierzStatystyki.add(
                 eb.startBooleanToggle(Text.literal("Niewielka"), Config.INSTANCE.toggleNiewielka)
                         .setDefaultValue(true)
                         .setTooltip(
@@ -114,7 +121,7 @@ public final class Ustawienia {
                         .build()
         );
 
-        wyswietlanieStatystyk.add(
+        wybierzStatystyki.add(
                 eb.startBooleanToggle(Text.literal("Przeciętna"), Config.INSTANCE.togglePrzecietna)
                         .setDefaultValue(true)
                         .setTooltip(
@@ -125,7 +132,7 @@ public final class Ustawienia {
                         .build()
         );
 
-        wyswietlanieStatystyk.add(
+        wybierzStatystyki.add(
                 eb.startBooleanToggle(Text.literal("Wymiarowa"), Config.INSTANCE.toggleWymiarowa)
                         .setDefaultValue(true)
                         .setTooltip(
@@ -136,7 +143,7 @@ public final class Ustawienia {
                         .build()
         );
 
-        wyswietlanieStatystyk.add(
+        wybierzStatystyki.add(
                 eb.startBooleanToggle(Text.literal("Ogromna"), Config.INSTANCE.toggleOgromna)
                         .setDefaultValue(true)
                         .setTooltip(
@@ -147,7 +154,7 @@ public final class Ustawienia {
                         .build()
         );
 
-        wyswietlanieStatystyk.add(
+        wybierzStatystyki.add(
                 eb.startBooleanToggle(Text.literal("Mamucia"), Config.INSTANCE.toggleMamucia)
                         .setDefaultValue(true)
                         .setTooltip(
@@ -158,7 +165,7 @@ public final class Ustawienia {
                         .build()
         );
 
-        wyswietlanieStatystyk.add(
+        wybierzStatystyki.add(
                 eb.startBooleanToggle(Text.literal("Suma"), Config.INSTANCE.toggleSuma)
                         .setDefaultValue(true)
                         .setTooltip(
@@ -169,7 +176,7 @@ public final class Ustawienia {
                         .build()
         );
 
-        wyswietlanieStatystyk.add(
+        wybierzStatystyki.add(
                 eb.startBooleanToggle(Text.literal("Zarobek"), Config.INSTANCE.toggleZarobek)
                         .setDefaultValue(true)
                         .setTooltip(
@@ -180,7 +187,7 @@ public final class Ustawienia {
                         .build()
         );
 
-        rybak.addEntry(wyswietlanieStatystyk.build());
+        rybak.addEntry(wybierzStatystyki.build());
 
         umiejetnosci.addEntry(
                 eb.startEnumSelector(Text.literal("Dźwięk główny"), Config.GlownyDzwiek.class, Config.INSTANCE.glownyDzwiek)

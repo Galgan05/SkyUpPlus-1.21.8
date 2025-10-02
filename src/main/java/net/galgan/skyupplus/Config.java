@@ -11,11 +11,17 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class Config {
-    public boolean toggleZadania = true;
-    public boolean zamykajZadania = false;
+    //HUD
+    public boolean toggleHud = true;
     public int offsetY = 5;
     public int offsetX = 5;
-    public boolean toggleRybak = true;
+
+    //ZADANIA
+    public boolean toggleZadania = true;
+    public boolean zamykajZadania = false;
+
+    //RYBAK
+    public WyswietlanieRybaka wyswietlanieRybaka = WyswietlanieRybaka.WEDKA;
     public boolean toggleNiewielka = true;
     public boolean togglePrzecietna = true;
     public boolean toggleWymiarowa = true;
@@ -30,6 +36,8 @@ public class Config {
     public int mamucia = 0;
     public int sumaryb = 0;
     public double zarobekzryb = 0;
+
+    //UMIEJĘTNOŚCI
     public boolean cooldownPlug = true;
     public boolean cooldownWiertlo = true;
     public boolean cooldownRozbiorka = true;
@@ -44,6 +52,27 @@ public class Config {
     public boolean odliczanieNawalnica = true;
     public GlownyDzwiek glownyDzwiek = GlownyDzwiek.DZWON;
     public OdliczanieDzwiek odliczanieDzwiek = OdliczanieDzwiek.EXP;
+
+    public enum WyswietlanieRybaka {
+        WEDKA("Trzymając wędkę", "wedka"),
+        ZAWSZE("Zawsze", "zawsze"),
+        NIGDY("Nigdy", "nigdy");
+
+        private final String label;
+        private final String mode;
+
+        WyswietlanieRybaka(String label, String mode) {
+            this.label = label;
+            this.mode = mode;
+        }
+
+        public String label() {
+            return label;
+        }
+        public String mode() {
+            return mode;
+        }
+    }
 
     public enum GlownyDzwiek {
         DZWON("Dzwon", SoundEvents.BLOCK_BELL_USE),
@@ -88,7 +117,6 @@ public class Config {
             return sound;
         }
     }
-
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final Path FILE = FabricLoader.getInstance().getConfigDir().resolve("skyupplus.json");

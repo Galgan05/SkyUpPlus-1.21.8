@@ -24,6 +24,7 @@ public class HUD {
     }
 
     public static void render(DrawContext context, RenderTickCounter counter) {
+        if(!Config.INSTANCE.toggleHud) return;
         //Initialize text renderer
         TextRenderer tr = MinecraftClient.getInstance().textRenderer;
 
@@ -46,7 +47,7 @@ public class HUD {
             }
         }
         //Check if fishing is active
-        if (Rybak.isFishing && Config.INSTANCE.toggleRybak) {
+        if (Config.INSTANCE.wyswietlanieRybaka.mode().equals("zawsze") || (Rybak.isFishing && Config.INSTANCE.wyswietlanieRybaka.mode().equals("wedka"))) {
             //Draw the fishing headers
             if (Config.INSTANCE.toggleNiewielka || Config.INSTANCE.togglePrzecietna || Config.INSTANCE.toggleWymiarowa || Config.INSTANCE.toggleOgromna || Config.INSTANCE.toggleMamucia || Config.INSTANCE.toggleSuma || Config.INSTANCE.toggleZarobek) {
                 context.drawTextWithShadow(tr, Text.empty()

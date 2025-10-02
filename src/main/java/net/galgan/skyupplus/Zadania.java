@@ -1,5 +1,6 @@
 package net.galgan.skyupplus;
 
+import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
 import net.galgan.skyupplus.mixin.HandledScreenAccess;
@@ -66,6 +67,12 @@ public class Zadania {
                 //Get the filtered description of the quest
                 filteredDescription = loreFilter(questLore);
             });
+        });
+
+        ClientReceiveMessageEvents.GAME.register((message, overlay) -> {
+            if (!overlay && message.getString().startsWith("Wyzwania » Ukończono zadanie")) {
+                isQuestActive = false;
+            }
         });
     }
 

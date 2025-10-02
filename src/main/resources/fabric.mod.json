@@ -11,7 +11,7 @@
 		"homepage": "",
 		"sources": "https://github.com/Galgan05/SkyUpPlus-1.21.8"
 	},
-	"license": "CC0-1.0",
+	"license": "MIT",
 	"icon": "assets/skyupplus/icon.png",
 	"environment": "client",
 	"entrypoints": {
