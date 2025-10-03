@@ -32,6 +32,20 @@ public class HUD {
         int xOffset = Config.INSTANCE.offsetX;
         int yOffset = Config.INSTANCE.offsetY;
 
+        //Check if there is a dungeon timer
+        if (Config.INSTANCE.onCooldown && Config.INSTANCE.toggleDungeony) {
+            context.drawTextWithShadow(tr, Text.empty()
+                    .append(Text.literal("» ").formatted(Formatting.BLUE))
+                    .append(Text.literal("Dungeony").formatted(Formatting.GRAY, Formatting.BOLD))
+                    .append(Text.literal(" «").formatted(Formatting.BLUE)), xOffset, yOffset,0xFFFFFFFF);
+            yOffset += tr.fontHeight + 2;
+            context.drawTextWithShadow(tr, Text.empty()
+                    .append(Text.literal("▪ ").formatted(Formatting.DARK_GRAY, Formatting.BOLD))
+                    .append(Text.literal("Cooldown: ").formatted(Formatting.AQUA))
+                    .append(Text.literal(String.format("%02d:%02d", Dungeony.min, Dungeony.sec)).formatted(Formatting.YELLOW)), xOffset, yOffset,0xFFFFFFFF);
+            yOffset += (tr.fontHeight + 2) * 2;
+        }
+
         //Check if there is a quest active
         if (Zadania.isQuestActive && Config.INSTANCE.toggleZadania) {
             //Get the quest name and description
@@ -46,6 +60,7 @@ public class HUD {
                 yOffset += tr.fontHeight + 2;
             }
         }
+
         //Check if fishing is active
         if (Config.INSTANCE.wyswietlanieRybaka.mode().equals("zawsze") || (Rybak.isFishing && Config.INSTANCE.wyswietlanieRybaka.mode().equals("wedka"))) {
             //Draw the fishing headers
@@ -65,42 +80,42 @@ public class HUD {
             //Draw the numbers for every fish tier
             if (Config.INSTANCE.toggleNiewielka) {
                 context.drawTextWithShadow(tr, Text.empty()
-                        .append(Text.literal("» ").formatted(Formatting.BLUE))
+                        .append(Text.literal("  » ").formatted(Formatting.BLUE))
                         .append(Text.literal("Niewielka: ").formatted(Formatting.GRAY))
                         .append(Text.literal(String.valueOf(Config.INSTANCE.niewielka)).formatted(Formatting.GRAY)), xOffset, yOffset,0xFFFFFFFF);
                 yOffset += tr.fontHeight + 2;
             }
             if (Config.INSTANCE.togglePrzecietna) {
                 context.drawTextWithShadow(tr, Text.empty()
-                        .append(Text.literal("» ").formatted(Formatting.BLUE))
+                        .append(Text.literal("  » ").formatted(Formatting.BLUE))
                         .append(Text.literal("Przeciętna: ").formatted(Formatting.YELLOW))
                         .append(Text.literal(String.valueOf(Config.INSTANCE.przecietna)).formatted(Formatting.YELLOW)), xOffset, yOffset,0xFFFFFFFF);
                 yOffset += tr.fontHeight + 2;
             }
             if (Config.INSTANCE.toggleWymiarowa) {
                 context.drawTextWithShadow(tr, Text.empty()
-                        .append(Text.literal("» ").formatted(Formatting.BLUE))
+                        .append(Text.literal("  » ").formatted(Formatting.BLUE))
                         .append(Text.literal("Wymiarowa: ").formatted(Formatting.GREEN))
                         .append(Text.literal(String.valueOf(Config.INSTANCE.wymiarowa)).formatted(Formatting.GREEN)), xOffset, yOffset,0xFFFFFFFF);
                 yOffset += tr.fontHeight + 2;
             }
             if (Config.INSTANCE.toggleOgromna) {
                 context.drawTextWithShadow(tr, Text.empty()
-                        .append(Text.literal("» ").formatted(Formatting.BLUE))
+                        .append(Text.literal("  » ").formatted(Formatting.BLUE))
                         .append(Text.literal("Ogromna: ").formatted(Formatting.GOLD))
                         .append(Text.literal(String.valueOf(Config.INSTANCE.ogromna)).formatted(Formatting.GOLD)), xOffset, yOffset,0xFFFFFFFF);
                 yOffset += tr.fontHeight + 2;
             }
             if (Config.INSTANCE.toggleMamucia) {
                 context.drawTextWithShadow(tr, Text.empty()
-                        .append(Text.literal("» ").formatted(Formatting.BLUE))
+                        .append(Text.literal("  » ").formatted(Formatting.BLUE))
                         .append(Text.literal("Mamucia: ").formatted(Formatting.DARK_PURPLE))
                         .append(Text.literal(String.valueOf(Config.INSTANCE.mamucia)).formatted(Formatting.DARK_PURPLE)), xOffset, yOffset,0xFFFFFFFF);
                 yOffset += tr.fontHeight + 2;
             }
             if (Config.INSTANCE.toggleSuma) {
                 context.drawTextWithShadow(tr, Text.empty()
-                        .append(Text.literal("» ").formatted(Formatting.BLUE))
+                        .append(Text.literal("  » ").formatted(Formatting.BLUE))
                         .append(Text.literal("Suma: ").formatted(Formatting.WHITE))
                         .append(Text.literal(String.valueOf(Config.INSTANCE.sumaryb)).formatted(Formatting.WHITE)), xOffset, yOffset,0xFFFFFFFF);
                 yOffset += tr.fontHeight + 2;
@@ -113,7 +128,7 @@ public class HUD {
             }
             if (Config.INSTANCE.toggleZarobek) {
                 context.drawTextWithShadow(tr, Text.empty()
-                        .append(Text.literal("» ").formatted(Formatting.BLUE))
+                        .append(Text.literal("  » ").formatted(Formatting.BLUE))
                         .append(Text.literal(String.valueOf(Config.INSTANCE.zarobekzryb)).append(" SC").formatted(Formatting.YELLOW)), xOffset, yOffset,0xFFFFFFFF);
                 yOffset += tr.fontHeight + 2;
             }

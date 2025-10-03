@@ -27,6 +27,7 @@ public final class Ustawienia {
         ConfigCategory zadania = builder.getOrCreateCategory(Text.literal("Zadania").formatted(Formatting.GOLD, Formatting.BOLD));
         ConfigCategory rybak = builder.getOrCreateCategory(Text.literal("Rybak").formatted(Formatting.DARK_AQUA, Formatting.BOLD));
         ConfigCategory umiejetnosci = builder.getOrCreateCategory(Text.literal("Umiejętności").formatted(Formatting.LIGHT_PURPLE, Formatting.BOLD));
+        ConfigCategory dungeony = builder.getOrCreateCategory(Text.literal("Dungeony").formatted(Formatting.GRAY, Formatting.BOLD));
 
         hud.addEntry(
                 eb.startBooleanToggle(Text.literal("Wyświetlanie HUDu"), Config.INSTANCE.toggleHud)
@@ -197,7 +198,7 @@ public final class Ustawienia {
                                 Text.literal("Ustawia dźwięk odtwarzany po zakończeniu umiejętności lub jej cooldownu").formatted(Formatting.GRAY)
                         )
                         .setEnumNameProvider(e -> Text.literal(((Config.GlownyDzwiek) e).label()))
-                        .setSaveConsumer(v -> Config.INSTANCE.glownyDzwiek = v) // write to your config obj here
+                        .setSaveConsumer(v -> Config.INSTANCE.glownyDzwiek = v)
                         .build()
         );
 
@@ -209,7 +210,7 @@ public final class Ustawienia {
                                 Text.literal("Ustawia dźwięk odtwarzany podczas odliczania do końca umiejętności").formatted(Formatting.GRAY)
                         )
                         .setEnumNameProvider(e -> Text.literal(((Config.OdliczanieDzwiek) e).label()))
-                        .setSaveConsumer(v -> Config.INSTANCE.odliczanieDzwiek = v) // write to your config obj here
+                        .setSaveConsumer(v -> Config.INSTANCE.odliczanieDzwiek = v)
                         .build()
         );
 
@@ -352,6 +353,30 @@ public final class Ustawienia {
         );
 
         umiejetnosci.addEntry(odliczanieUmiejetnosci.build());
+
+        dungeony.addEntry(
+                eb.startBooleanToggle(Text.literal("Wyświetlanie cooldownu dungeonu"), Config.INSTANCE.toggleDungeony)
+                        .setDefaultValue(true)
+                        .setTooltip(
+                                Text.literal("Wyświetlanie cooldownu dungeonu").formatted(Formatting.WHITE, Formatting.BOLD),
+                                Text.literal("Wyświetla odliczanie do następnego wejścia do dungeonu").formatted(Formatting.GRAY),
+                                Text.literal("UWAGA! Jeżeli wywaliło ciebie z serwera będąc na dungeonie, wpisz /dng cooldown, aby zsynchronizować odliczanie").formatted(Formatting.RED)
+                        )
+                        .setSaveConsumer(v -> Config.INSTANCE.toggleDungeony = v)
+                        .build()
+        );
+
+        dungeony.addEntry(
+                eb.startEnumSelector(Text.literal("Dźwięk cooldownu dungeonu"), Config.DungeonyDzwiek.class, Config.INSTANCE.dungeonyDzwiek)
+                        .setDefaultValue(Config.DungeonyDzwiek.KOZI_ROG)
+                        .setTooltip(
+                                Text.literal("Dźwięk cooldownu dungeonu").formatted(Formatting.WHITE, Formatting.BOLD),
+                                Text.literal("Ustawia dźwięk odtwarzany po zakończeniu cooldownu dungeonu").formatted(Formatting.GRAY)
+                        )
+                        .setEnumNameProvider(e -> Text.literal(((Config.DungeonyDzwiek) e).label()))
+                        .setSaveConsumer(v -> Config.INSTANCE.dungeonyDzwiek = v)
+                        .build()
+        );
 
         builder.setSavingRunnable(Config::save);
 

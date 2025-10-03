@@ -53,6 +53,12 @@ public class Config {
     public GlownyDzwiek glownyDzwiek = GlownyDzwiek.DZWON;
     public OdliczanieDzwiek odliczanieDzwiek = OdliczanieDzwiek.EXP;
 
+    //DUNGEONY
+    public boolean toggleDungeony = true;
+    public long czasPonownegoWejscia = -1L;
+    public boolean onCooldown = false;
+    public DungeonyDzwiek dungeonyDzwiek = DungeonyDzwiek.KOZI_ROG;
+
     public enum WyswietlanieRybaka {
         WEDKA("Trzymając wędkę", "wedka"),
         ZAWSZE("Zawsze", "zawsze"),
@@ -106,6 +112,28 @@ public class Config {
         private final SoundEvent sound;
 
         OdliczanieDzwiek(String label, SoundEvent sound) {
+            this.label = label;
+            this.sound = sound;
+        }
+
+        public String label() {
+            return label;
+        }
+        public SoundEvent sound() {
+            return sound;
+        }
+    }
+
+    public enum DungeonyDzwiek {
+        DZWON("Dzwon", SoundEvents.BLOCK_BELL_USE),
+        KOZI_ROG("Kozi Róg", SoundEvents.GOAT_HORN_SOUNDS.get(1).value()),
+        WITHER("Wither", SoundEvents.ENTITY_WITHER_SPAWN),
+        WYZWANIE("Wyzwanie", SoundEvents.UI_TOAST_CHALLENGE_COMPLETE);
+
+        private final String label;
+        private final SoundEvent sound;
+
+        DungeonyDzwiek(String label, SoundEvent sound) {
             this.label = label;
             this.sound = sound;
         }

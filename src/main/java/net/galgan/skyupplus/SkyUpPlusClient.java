@@ -8,9 +8,11 @@ public class SkyUpPlusClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
         Config.load();
+        Commands.registerCommands();
         Zadania.handlerZadan();
         Rybak.handlerRybaka();
         Umiejetnosci.handlerUmiejetnosci();
+        Dungeony.dungeony();
         HUD.renderHUD();
 	}
 }
