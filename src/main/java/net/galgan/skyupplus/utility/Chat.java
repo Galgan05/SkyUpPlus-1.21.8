@@ -1,4 +1,4 @@
-package net.galgan.skyupplus;
+package net.galgan.skyupplus.utility;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.ChatHud;

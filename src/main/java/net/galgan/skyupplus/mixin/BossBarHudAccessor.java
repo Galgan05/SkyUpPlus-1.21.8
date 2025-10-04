@@ -10,7 +10,6 @@ import java.util.UUID;
 
 @Mixin(BossBarHud.class)
 public interface BossBarHudAccessor {
-    // Field name in Yarn is "bossBars" (Map<UUID, ClientBossBar>)
     @Accessor("bossBars")
     Map<UUID, ClientBossBar> getBossBarsMap();
 }

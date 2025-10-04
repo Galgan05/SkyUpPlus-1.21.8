@@ -1,8 +1,10 @@
-package net.galgan.skyupplus;
+package net.galgan.skyupplus.features;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
+import net.galgan.skyupplus.config.Config;
 import net.galgan.skyupplus.mixin.BossBarHudAccessor;
+import net.galgan.skyupplus.utility.ServerRestrictor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.BossBarHud;
 import net.minecraft.client.gui.hud.ClientBossBar;
@@ -16,11 +18,11 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Umiejetnosci {
+public class Abilities {
 
     private static final Map<UUID, Integer> lastTriggered = new HashMap<>();
 
-    public static void handlerUmiejetnosci() {
+    public static void abilities() {
         ClientReceiveMessageEvents.GAME.register((message, overlay) -> {
             if (overlay) {
                 if (Config.INSTANCE.cooldownPlug && message.getString().startsWith("§6§lPrace §8§l» §e§aUmiejętność §6§c§lPług")) {
@@ -55,22 +57,22 @@ public class Umiejetnosci {
 
                 String title = bar.getName().getString();
 
-                if (Config.INSTANCE.odliczaniePlug && title.startsWith("Pług")) {
+                if (Config.INSTANCE.countdownPlug && title.startsWith("Pług")) {
                     playCountdown(client, title, id);
                 }
-                if (Config.INSTANCE.odliczanieRozbiorka && title.startsWith("Rozbiórka")) {
+                if (Config.INSTANCE.countdownRozbiorka && title.startsWith("Rozbiórka")) {
                     playCountdown(client, title, id);
                 }
-                if (Config.INSTANCE.odliczanieNawalnica && title.startsWith("Nawałnica")) {
+                if (Config.INSTANCE.countdownNawalnica && title.startsWith("Nawałnica")) {
                     playCountdown(client, title, id);
                 }
-                if (Config.INSTANCE.odliczanieSieciRybackie && title.startsWith("Sieci rybackie")) {
+                if (Config.INSTANCE.countdownSieciRybackie && title.startsWith("Sieci rybackie")) {
                     playCountdown(client, title, id);
                 }
-                if (Config.INSTANCE.odliczaniePila && title.startsWith("Piła")) {
+                if (Config.INSTANCE.countdownPila && title.startsWith("Piła")) {
                     playCountdown(client, title, id);
                 }
-                if (Config.INSTANCE.odliczanieWiertlo && title.startsWith("Wiertło")) {
+                if (Config.INSTANCE.countdownWiertlo && title.startsWith("Wiertło")) {
                     playCountdown(client, title, id);
                 }
             }
@@ -82,7 +84,7 @@ public class Umiejetnosci {
         if (client.player != null) {
             client.getSoundManager().play(
                     new PositionedSoundInstance(
-                            Config.INSTANCE.glownyDzwiek.sound(),
+                            Config.INSTANCE.mainSound.sound(),
                             SoundCategory.MASTER,
                             1.0f,
                             1.0f,
@@ -112,7 +114,7 @@ public class Umiejetnosci {
             if(timeremaining == 4) {
                 client.getSoundManager().play(
                         new PositionedSoundInstance(
-                                Config.INSTANCE.odliczanieDzwiek.sound(),
+                                Config.INSTANCE.countdownSound.sound(),
                                 SoundCategory.MASTER,
                                 1.0f,
                                 0.9f,
@@ -124,7 +126,7 @@ public class Umiejetnosci {
             if(timeremaining == 3) {
                 client.getSoundManager().play(
                         new PositionedSoundInstance(
-                                Config.INSTANCE.odliczanieDzwiek.sound(),
+                                Config.INSTANCE.countdownSound.sound(),
                                 SoundCategory.MASTER,
                                 1.0f,
                                 1.0f,
@@ -136,7 +138,7 @@ public class Umiejetnosci {
             if(timeremaining == 2) {
                 client.getSoundManager().play(
                         new PositionedSoundInstance(
-                                Config.INSTANCE.odliczanieDzwiek.sound(),
+                                Config.INSTANCE.countdownSound.sound(),
                                 SoundCategory.MASTER,
                                 1.0f,
                                 1.1f,
@@ -148,7 +150,7 @@ public class Umiejetnosci {
             if(timeremaining == 1) {
                 client.getSoundManager().play(
                         new PositionedSoundInstance(
-                                Config.INSTANCE.glownyDzwiek.sound(),
+                                Config.INSTANCE.mainSound.sound(),
                                 SoundCategory.MASTER,
                                 1.0f,
                                 1.0f,

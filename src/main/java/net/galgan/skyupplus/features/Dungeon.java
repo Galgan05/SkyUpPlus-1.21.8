@@ -1,8 +1,10 @@
-package net.galgan.skyupplus;
+package net.galgan.skyupplus.features;
 
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
+import net.galgan.skyupplus.config.Config;
+import net.galgan.skyupplus.utility.Chat;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.sound.SoundCategory;
@@ -15,22 +17,22 @@ import java.time.ZonedDateTime;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Dungeony {
+public class Dungeon {
     public static int min = -1;
     public static int sec = -1;
 
-    public static void dungeony() {
-        if (!Config.INSTANCE.toggleDungeony) return;
+    public static void dungeon() {
+        if (!Config.INSTANCE.dungeonCooldownToggle) return;
 
         ClientReceiveMessageEvents.GAME.register((message, overlay) -> {
             if (!overlay && message.getString().startsWith("Dungeon » Opuszczono Du")) {
-                Config.INSTANCE.czasPonownegoWejscia = System.currentTimeMillis() + 1800000;
+                Config.INSTANCE.nextEntryTime = System.currentTimeMillis() + 1800000;
                 Config.INSTANCE.onCooldown = true;
                 Config.save();
             }
 
             if (!overlay && message.getString().startsWith("Dungeon » Nie musisz czekać")) {
-                Config.INSTANCE.czasPonownegoWejscia = System.currentTimeMillis();
+                Config.INSTANCE.nextEntryTime = System.currentTimeMillis();
                 Config.INSTANCE.onCooldown = false;
                 Config.save();
             }
@@ -47,7 +49,7 @@ public class Dungeony {
 
                 int timeremaining = (minutes * 60 + seconds) * 1000;
 
-                Config.INSTANCE.czasPonownegoWejscia = System.currentTimeMillis() + timeremaining;
+                Config.INSTANCE.nextEntryTime = System.currentTimeMillis() + timeremaining;
                 Config.INSTANCE.onCooldown = true;
                 Config.save();
             }
@@ -59,21 +61,21 @@ public class Dungeony {
             ZonedDateTime czasPolski = ZonedDateTime.now(ZoneId.of("Europe/Warsaw"));
 
             if (czasPolski.getHour() == 3 && czasPolski.getMinute() == 0 && czasPolski.getSecond() == 0) {
-                Config.INSTANCE.czasPonownegoWejscia = -1L;
+                Config.INSTANCE.nextEntryTime = -1L;
                 Config.INSTANCE.onCooldown = false;
                 Config.save();
             }
 
             if(Config.INSTANCE.onCooldown) {
-                long czas = Config.INSTANCE.czasPonownegoWejscia - System.currentTimeMillis();
+                long czas = Config.INSTANCE.nextEntryTime - System.currentTimeMillis();
                 int dungeonyTimer = (int) czas/1000;
                 min = dungeonyTimer / 60;
                 sec = dungeonyTimer % 60;
 
-                if(System.currentTimeMillis() > Config.INSTANCE.czasPonownegoWejscia) {
-                    playDungeony();
+                if(System.currentTimeMillis() > Config.INSTANCE.nextEntryTime) {
+                    playDungeonSound();
                     Chat.send(Text.literal("Cooldown na wejście do dungeonu skończył się!").formatted(Formatting.GREEN));
-                    Config.INSTANCE.czasPonownegoWejscia = -1L;
+                    Config.INSTANCE.nextEntryTime = -1L;
                     Config.INSTANCE.onCooldown = false;
                     Config.save();
                 }
@@ -81,12 +83,12 @@ public class Dungeony {
         });
     }
 
-    private static void playDungeony() {
+    private static void playDungeonSound() {
         MinecraftClient client = MinecraftClient.getInstance();
         if (client.player != null) {
             client.getSoundManager().play(
                     new PositionedSoundInstance(
-                            Config.INSTANCE.dungeonyDzwiek.sound(),
+                            Config.INSTANCE.dungeonSound.sound(),
                             SoundCategory.MASTER,
                             1.0f,
                             1.0f,

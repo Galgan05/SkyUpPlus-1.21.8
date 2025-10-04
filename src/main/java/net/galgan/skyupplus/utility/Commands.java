@@ -1,18 +1,19 @@
-package net.galgan.skyupplus;
+package net.galgan.skyupplus.utility;
 
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
+import net.galgan.skyupplus.config.Settings;
 import net.minecraft.client.MinecraftClient;
 
 public class Commands {
-    public static void registerCommands() {
+    public static void commands() {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
 
             dispatcher.register(ClientCommandManager.literal("sup").executes(ctx -> {
 
                 MinecraftClient client = MinecraftClient.getInstance();
 
-                client.execute(() -> client.send(() -> client.setScreen(Ustawienia.create(client.currentScreen))));
+                client.execute(() -> client.send(() -> client.setScreen(Settings.create(client.currentScreen))));
 
                 return 1;
             }));

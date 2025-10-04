@@ -19,7 +19,7 @@
           "net.galgan.skyupplus.SkyUpPlusClient"
 		],
         "modmenu": [
-            "net.galgan.skyupplus.ModMenu"
+          "net.galgan.skyupplus.config.ModMenu"
         ]
 	},
 	"mixins": [

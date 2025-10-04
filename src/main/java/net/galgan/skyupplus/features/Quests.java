@@ -1,9 +1,11 @@
-package net.galgan.skyupplus;
+package net.galgan.skyupplus.features;
 
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
+import net.galgan.skyupplus.config.Config;
 import net.galgan.skyupplus.mixin.HandledScreenAccess;
+import net.galgan.skyupplus.utility.Chat;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.LoreComponent;
@@ -15,15 +17,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class Zadania {
+public class Quests {
     public static Text questName;
     public static List<Text> filteredDescription;
     public static boolean isQuestActive;
 
-    public static void handlerZadan() {
+    public static void quests() {
         ScreenEvents.BEFORE_INIT.register((client, screen, w, h) -> {
             //Check if you're inside a container that's valid
-            if(!Config.INSTANCE.toggleZadania) return;
+            if(!Config.INSTANCE.toggleQuests) return;
             if (!(screen instanceof HandledScreen<?> handled)) return;
             if (!containerTitles.contains(handled.getTitle().getString())) return;
 
