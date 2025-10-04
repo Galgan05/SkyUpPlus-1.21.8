@@ -22,6 +22,27 @@ public class Abilities {
 
     private static final Map<UUID, Integer> lastTriggered = new HashMap<>();
 
+    public static int[] timePlug;
+    public static int[] timeWiertlo;
+    public static int[] timeRozbiorka;
+    public static int[] timePila;
+    public static int[] timeSieciRybackie;
+    public static int[] timeNawalnica;
+
+    public static boolean isActivePlug = false;
+    public static boolean isActiveWiertlo = false;
+    public static boolean isActiveRozbiorka = false;
+    public static boolean isActivePila = false;
+    public static boolean isActiveSieciRybackie = false;
+    public static boolean isActiveNawalnica = false;
+
+    private static long nextPlug = -1L;
+    private static long nextWiertlo = -1L;
+    private static long nextRozbiorka = -1L;
+    private static long nextPila = -1L;
+    private static long nextSieciRybackie = -1L;
+    private static long nextNawalnica = -1L;
+
     public static void abilities() {
         ClientReceiveMessageEvents.GAME.register((message, overlay) -> {
             if(!ServerRestrictor.isAllowed()) return;
@@ -53,32 +74,139 @@ public class Abilities {
 
             if (client.player == null || client.inGameHud == null) return;
 
+            isActivePlug = false;
+            isActiveWiertlo = false;
+            isActiveRozbiorka = false;
+            isActivePila = false;
+            isActiveSieciRybackie = false;
+            isActiveNawalnica = false;
+
             BossBarHud hud = client.inGameHud.getBossBarHud();
             if(hud == null) return;
 
             for (ClientBossBar bar : ((BossBarHudAccessor) hud).getBossBarsMap().values()) {
                 UUID id = bar.getUuid();
-
                 String title = bar.getName().getString();
 
                 if (Config.INSTANCE.countdownPlug && title.startsWith("Pług")) {
-                    playCountdown(client, title, id);
+                    isActivePlug = true;
+
+                    int[] result = getTimeRemaining(title, id);
+                    int timeremaining = result[0];
+                    int last = result[1];
+
+                    playCountdown(client, id, timeremaining, last);
+
+                    nextPlug = System.currentTimeMillis() + 1000L * timeremaining + 300000;
                 }
+
                 if (Config.INSTANCE.countdownRozbiorka && title.startsWith("Rozbiórka")) {
-                    playCountdown(client, title, id);
+                    isActiveRozbiorka = true;
+
+                    int[] result = getTimeRemaining(title, id);
+                    int timeremaining = result[0];
+                    int last = result[1];
+
+                    playCountdown(client, id, timeremaining, last);
+
+                    nextRozbiorka = System.currentTimeMillis() + 1000L * timeremaining + 300000;
                 }
+
                 if (Config.INSTANCE.countdownNawalnica && title.startsWith("Nawałnica")) {
-                    playCountdown(client, title, id);
+                    isActiveNawalnica = true;
+
+                    int[] result = getTimeRemaining(title, id);
+                    int timeremaining = result[0];
+                    int last = result[1];
+
+                    playCountdown(client, id, timeremaining, last);
+
+                    nextNawalnica = System.currentTimeMillis() + 1000L * timeremaining + 300000;
                 }
+
                 if (Config.INSTANCE.countdownSieciRybackie && title.startsWith("Sieci rybackie")) {
-                    playCountdown(client, title, id);
+                    isActiveSieciRybackie = true;
+
+                    int[] result = getTimeRemaining(title, id);
+                    int timeremaining = result[0];
+                    int last = result[1];
+
+                    playCountdown(client, id, timeremaining, last);
+
+                    nextSieciRybackie = System.currentTimeMillis() + 1000L * timeremaining + 300000;
                 }
+
                 if (Config.INSTANCE.countdownPila && title.startsWith("Piła")) {
-                    playCountdown(client, title, id);
+                    isActivePila = true;
+
+                    int[] result = getTimeRemaining(title, id);
+                    int timeremaining = result[0];
+                    int last = result[1];
+
+                    playCountdown(client, id, timeremaining, last);
+
+                    nextPila = System.currentTimeMillis() + 1000L * timeremaining + 300000;
                 }
+
                 if (Config.INSTANCE.countdownWiertlo && title.startsWith("Wiertło")) {
-                    playCountdown(client, title, id);
+                    isActiveWiertlo = true;
+
+                    int[] result = getTimeRemaining(title, id);
+                    int timeremaining = result[0];
+                    int last = result[1];
+
+                    playCountdown(client, id, timeremaining, last);
+
+                    nextWiertlo = System.currentTimeMillis() + 1000L * timeremaining + 300000;
                 }
+            }
+
+            if (System.currentTimeMillis() <= nextPlug) {
+                long czas = nextPlug - System.currentTimeMillis();
+                int timer = (int) czas/1000;
+                timePlug = new int[]{timer / 60, timer % 60};
+            } else {
+                timePlug = null;
+            }
+
+            if (System.currentTimeMillis() <= nextRozbiorka) {
+                long czas = nextRozbiorka - System.currentTimeMillis();
+                int timer = (int) czas/1000;
+                timeRozbiorka = new int[]{timer / 60, timer % 60};
+            } else {
+                timeRozbiorka = null;
+            }
+
+            if (System.currentTimeMillis() <= nextNawalnica) {
+                long czas = nextNawalnica - System.currentTimeMillis();
+                int timer = (int) czas/1000;
+                timeNawalnica= new int[]{timer / 60, timer % 60};
+            } else {
+                timeNawalnica = null;
+            }
+
+            if (System.currentTimeMillis() <= nextSieciRybackie) {
+                long czas = nextSieciRybackie - System.currentTimeMillis();
+                int timer = (int) czas/1000;
+                timeSieciRybackie = new int[]{timer / 60, timer % 60};
+            } else {
+                timeSieciRybackie = null;
+            }
+
+            if (System.currentTimeMillis() <= nextPila) {
+                long czas = nextPila - System.currentTimeMillis();
+                int timer = (int) czas/1000;
+                timePila = new int[]{timer / 60, timer % 60};
+            } else {
+                timePila = null;
+            }
+
+            if (System.currentTimeMillis() <= nextWiertlo) {
+                long czas = nextWiertlo - System.currentTimeMillis();
+                int timer = (int) czas/1000;
+                timeWiertlo = new int[]{timer / 60, timer % 60};
+            } else {
+                timeWiertlo = null;
             }
         });
     }
@@ -98,10 +226,7 @@ public class Abilities {
             );
         }
     }
-
-    private static void playCountdown(MinecraftClient client, String title, UUID id) {
-        if (client.player == null) return;
-
+    private static int[] getTimeRemaining(String title, UUID id) {
         int minutes = 0, seconds = 0;
 
         Matcher mMin = Pattern.compile("(\\d+)\\s*min").matcher(title);
@@ -111,8 +236,13 @@ public class Abilities {
         if (mSec.find()) seconds = Integer.parseInt(mSec.group(1));
 
         int timeremaining = minutes * 60 + seconds;
-
         int last = lastTriggered.getOrDefault(id, -1);
+
+        return new int[]{timeremaining, last};
+    }
+
+    private static void playCountdown(MinecraftClient client, UUID id, int timeremaining, int last) {
+        if (client.player == null) return;
 
         if (timeremaining != last) {
             if(timeremaining == 4) {
@@ -162,9 +292,9 @@ public class Abilities {
                                 client.player.getX(), client.player.getY(), client.player.getZ()
                         )
                 );
+
             }
             lastTriggered.put(id, timeremaining);
         }
     }
-
 }

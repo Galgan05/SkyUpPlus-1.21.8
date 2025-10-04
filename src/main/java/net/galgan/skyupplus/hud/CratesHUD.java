@@ -243,32 +243,32 @@ public class CratesHUD {
                 yOffset += tr.fontHeight + 2;
             }
             if (Config.INSTANCE.karambitToggle ||
-                    Config.INSTANCE.perunToggle ||
-                    Config.INSTANCE.cymofanToggle ||
-                    Config.INSTANCE.mlotThoraToggle ||
-                    Config.INSTANCE.urizelToggle ||
-                    Config.INSTANCE.azadaToggle ||
-                    Config.INSTANCE.spinelToggle ||
-                    Config.INSTANCE.karpiolapToggle ||
-                    Config.INSTANCE.ethericaToggle ||
-                    Config.INSTANCE.lukLegolasaToggle ||
-                    Config.INSTANCE.arbaletToggle ||
-                    Config.INSTANCE.powrotOdysaToggle ||
-                    Config.INSTANCE.cassisToggle ||
-                    Config.INSTANCE.cuirassToggle ||
-                    Config.INSTANCE.cuissotToggle ||
-                    Config.INSTANCE.cossetToggle ||
-                    Config.INSTANCE.kapcieLotnikaToggle ||
-                    Config.INSTANCE.rivendellToggle ||
-                    Config.INSTANCE.impetToggle ||
-                    Config.INSTANCE.phloxToggle ||
-                    Config.INSTANCE.majsterToggle ||
-                    Config.INSTANCE.magiczneWiaderkoToggle ||
-                    Config.INSTANCE.statTrackerToggle ||
-                    Config.INSTANCE.jajkoNiespodziankaToggle ||
-                    Config.INSTANCE.klejnotKupieckiToggle ||
-                    Config.INSTANCE.kontrolerMagazynowToggle ||
-                    Config.INSTANCE.tajemniceSkyUPaToggle) {
+                Config.INSTANCE.perunToggle ||
+                Config.INSTANCE.cymofanToggle ||
+                Config.INSTANCE.mlotThoraToggle ||
+                Config.INSTANCE.urizelToggle ||
+                Config.INSTANCE.azadaToggle ||
+                Config.INSTANCE.spinelToggle ||
+                Config.INSTANCE.karpiolapToggle ||
+                Config.INSTANCE.ethericaToggle ||
+                Config.INSTANCE.lukLegolasaToggle ||
+                Config.INSTANCE.arbaletToggle ||
+                Config.INSTANCE.powrotOdysaToggle ||
+                Config.INSTANCE.cassisToggle ||
+                Config.INSTANCE.cuirassToggle ||
+                Config.INSTANCE.cuissotToggle ||
+                Config.INSTANCE.cossetToggle ||
+                Config.INSTANCE.kapcieLotnikaToggle ||
+                Config.INSTANCE.rivendellToggle ||
+                Config.INSTANCE.impetToggle ||
+                Config.INSTANCE.phloxToggle ||
+                Config.INSTANCE.majsterToggle ||
+                Config.INSTANCE.magiczneWiaderkoToggle ||
+                Config.INSTANCE.statTrackerToggle ||
+                Config.INSTANCE.jajkoNiespodziankaToggle ||
+                Config.INSTANCE.klejnotKupieckiToggle ||
+                Config.INSTANCE.kontrolerMagazynowToggle ||
+                Config.INSTANCE.tajemniceSkyUPaToggle) {
                 //ADD SPACER
                 yOffset += tr.fontHeight + 2;
             }

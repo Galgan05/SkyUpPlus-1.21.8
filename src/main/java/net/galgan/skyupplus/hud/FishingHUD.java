@@ -80,28 +80,28 @@ public class FishingHUD {
                 context.drawTextWithShadow(tr, Text.empty()
                         .append(Text.literal("  » ").formatted(Formatting.BLUE))
                         .append(Text.literal("Zarobek: ").formatted(Formatting.YELLOW))
-                        .append(Text.literal(String.valueOf(Config.INSTANCE.totalEarned)).append(" SC").formatted(Formatting.YELLOW)), xOffset, yOffset,0xFFFFFFFF);
+                        .append(Text.literal(String.format("%.2f", Config.INSTANCE.totalEarned)).append(" SC").formatted(Formatting.YELLOW)), xOffset, yOffset,0xFFFFFFFF);
                 yOffset += tr.fontHeight + 2;
             }
             if (Config.INSTANCE.toggleWaga) {
                 context.drawTextWithShadow(tr, Text.empty()
                         .append(Text.literal("  » ").formatted(Formatting.BLUE))
                         .append(Text.literal("Waga: ").formatted(Formatting.AQUA))
-                        .append(Text.literal(String.valueOf(Config.INSTANCE.totalWeight)).append("g").formatted(Formatting.AQUA)), xOffset, yOffset,0xFFFFFFFF);
+                        .append(Text.literal(String.format("%.2f", Config.INSTANCE.totalWeight)).append("g").formatted(Formatting.AQUA)), xOffset, yOffset,0xFFFFFFFF);
                 yOffset += tr.fontHeight + 2;
             }
             if (Config.INSTANCE.toggleNajwieksza) {
                 context.drawTextWithShadow(tr, Text.empty()
                         .append(Text.literal("  » ").formatted(Formatting.BLUE))
                         .append(Text.literal("Max: ").formatted(Formatting.GREEN))
-                        .append(Text.literal(String.valueOf(Config.INSTANCE.biggestWeight)).append("g").formatted(Formatting.GREEN)), xOffset, yOffset,0xFFFFFFFF);
+                        .append(Text.literal(String.format("%.2f", Config.INSTANCE.biggestWeight)).append("g").formatted(Formatting.GREEN)), xOffset, yOffset,0xFFFFFFFF);
                 yOffset += tr.fontHeight + 2;
             }
             if (Config.INSTANCE.toggleNajmniejsza) {
                 context.drawTextWithShadow(tr, Text.empty()
                         .append(Text.literal("  » ").formatted(Formatting.BLUE))
                         .append(Text.literal("Min: ").formatted(Formatting.RED))
-                        .append(Text.literal(String.valueOf(Config.INSTANCE.smallestWeight)).append("g").formatted(Formatting.RED)), xOffset, yOffset,0xFFFFFFFF);
+                        .append(Text.literal(String.format("%.2f", Config.INSTANCE.smallestWeight)).append("g").formatted(Formatting.RED)), xOffset, yOffset,0xFFFFFFFF);
                 yOffset += tr.fontHeight + 2;
             }
             if (Config.INSTANCE.toggleNiewielka ||

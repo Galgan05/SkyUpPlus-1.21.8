@@ -8,9 +8,16 @@
 		"Galgan"
 	],
 	"contact": {
-		"homepage": "",
+		"homepage": "https://discord.com/invite/6fwKWSCGZZ",
 		"sources": "https://github.com/Galgan05/SkyUpPlus-1.21.8"
 	},
+    "custom": {
+      "modmenu": {
+        "links": {
+          "modmenu.discord":   "https://discord.com/invite/6fwKWSCGZZ"
+        }
+      }
+    },
 	"license": "MIT",
 	"icon": "assets/skyupplus/icon.png",
 	"environment": "client",

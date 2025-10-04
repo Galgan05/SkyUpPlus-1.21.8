@@ -33,6 +33,7 @@ public class HUD {
             TextRenderer tr = MinecraftClient.getInstance().textRenderer;
 
             DungeonHUD.dungeonHUD(context, tr, xOffset, yOffset);
+            AbilitiesHUD.abilitiesHUD(context, tr, xOffset, yOffset);
             CratesHUD.cratesHUD(context, tr, xOffset, yOffset);
             FishingHUD.fishingHUD(context, tr, xOffset, yOffset);
             QuestsHUD.questsHUD(context, tr, xOffset, yOffset);

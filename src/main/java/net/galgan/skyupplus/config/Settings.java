@@ -249,14 +249,14 @@ public final class Settings {
                         .build()
         );
 
-        var abilitiesCooldown = eb.startSubCategory(Text.literal("Powiadomienie o cooldownie")).setExpanded(true);
+        var abilitiesCooldown = eb.startSubCategory(Text.literal("Wyświetlanie cooldownu umiejętności")).setExpanded(true);
 
         abilitiesCooldown.add(
                 eb.startBooleanToggle(Text.literal("Pług"), Config.INSTANCE.cooldownPlug)
                         .setDefaultValue(true)
                         .setTooltip(
                                 Text.literal("Pług").formatted(Formatting.WHITE, Formatting.BOLD),
-                                Text.literal("Odtwarza wybrany dźwięk po zakończeniu cooldownu pługu").formatted(Formatting.GRAY)
+                                Text.literal("Wyświetla cooldown pługu i odtwarza dźwięk po jego zakończeniu").formatted(Formatting.GRAY)
                         )
                         .setSaveConsumer(v -> Config.INSTANCE.cooldownPlug = v)
                         .build()
@@ -267,7 +267,7 @@ public final class Settings {
                         .setDefaultValue(true)
                         .setTooltip(
                                 Text.literal("Wiertło").formatted(Formatting.WHITE, Formatting.BOLD),
-                                Text.literal("Odtwarza wybrany dźwięk po zakończeniu cooldownu wiertła").formatted(Formatting.GRAY)
+                                Text.literal("Wyświetla cooldown wiertła i odtwarza dźwięk po jego zakończeniu").formatted(Formatting.GRAY)
                         )
                         .setSaveConsumer(v -> Config.INSTANCE.cooldownWiertlo = v)
                         .build()
@@ -278,7 +278,7 @@ public final class Settings {
                         .setDefaultValue(true)
                         .setTooltip(
                                 Text.literal("Rozbiórka").formatted(Formatting.WHITE, Formatting.BOLD),
-                                Text.literal("Odtwarza wybrany dźwięk po zakończeniu cooldownu rozbiórki").formatted(Formatting.GRAY)
+                                Text.literal("Wyświetla cooldown rozbiórki i odtwarza dźwięk po jego zakończeniu").formatted(Formatting.GRAY)
                         )
                         .setSaveConsumer(v -> Config.INSTANCE.cooldownRozbiorka = v)
                         .build()
@@ -289,7 +289,7 @@ public final class Settings {
                         .setDefaultValue(true)
                         .setTooltip(
                                 Text.literal("Piła").formatted(Formatting.WHITE, Formatting.BOLD),
-                                Text.literal("Odtwarza wybrany dźwięk po zakończeniu cooldownu piły").formatted(Formatting.GRAY)
+                                Text.literal("Wyświetla cooldown piły i odtwarza dźwięk po jego zakończeniu").formatted(Formatting.GRAY)
                         )
                         .setSaveConsumer(v -> Config.INSTANCE.cooldownPila = v)
                         .build()
@@ -300,7 +300,7 @@ public final class Settings {
                         .setDefaultValue(true)
                         .setTooltip(
                                 Text.literal("Sieci rybackie").formatted(Formatting.WHITE, Formatting.BOLD),
-                                Text.literal("Odtwarza wybrany dźwięk po zakończeniu cooldownu sieci rybackich").formatted(Formatting.GRAY)
+                                Text.literal("Wyświetla cooldown sieci rybackich i odtwarza dźwięk po jego zakończeniu").formatted(Formatting.GRAY)
                         )
                         .setSaveConsumer(v -> Config.INSTANCE.cooldownSieciRybackie = v)
                         .build()
@@ -311,7 +311,7 @@ public final class Settings {
                         .setDefaultValue(true)
                         .setTooltip(
                                 Text.literal("Nawałnica").formatted(Formatting.WHITE, Formatting.BOLD),
-                                Text.literal("Odtwarza wybrany dźwięk po zakończeniu cooldownu nawałnicy").formatted(Formatting.GRAY)
+                                Text.literal("Wyświetla cooldown nawałnicy i odtwarza dźwięk po jego zakończeniu").formatted(Formatting.GRAY)
                         )
                         .setSaveConsumer(v -> Config.INSTANCE.cooldownNawalnica = v)
                         .build()
@@ -319,7 +319,7 @@ public final class Settings {
 
         abilities.addEntry(abilitiesCooldown.build());
 
-        var abilitiesCountdown = eb.startSubCategory(Text.literal("countdown do końca umiejętności")).setExpanded(true);
+        var abilitiesCountdown = eb.startSubCategory(Text.literal("Odliczanie do końca umiejętności")).setExpanded(true);
 
         abilitiesCountdown.add(
                 eb.startBooleanToggle(Text.literal("Pług"), Config.INSTANCE.countdownPlug)

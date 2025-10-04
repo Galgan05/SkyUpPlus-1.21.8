@@ -23,7 +23,10 @@ public class Dungeon {
     public static int sec = -1;
 
     public static void dungeon() {
-        if (!Config.INSTANCE.dungeonCooldownToggle) return;
+
+        if(System.currentTimeMillis() >= Config.INSTANCE.nextEntryTime) {
+            Config.INSTANCE.nextEntryTime = -1L;
+        }
 
         ClientReceiveMessageEvents.GAME.register((message, overlay) -> {
             if(!ServerRestrictor.isAllowed()) return;
@@ -60,26 +63,28 @@ public class Dungeon {
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if(!ServerRestrictor.isAllowed()) return;
-
+            if (!Config.INSTANCE.dungeonCooldownToggle) return;
             if (client.player == null) return;
 
-            ZonedDateTime czasPolski = ZonedDateTime.now(ZoneId.of("Europe/Warsaw"));
+            ZonedDateTime polishTime = ZonedDateTime.now(ZoneId.of("Europe/Warsaw"));
 
-            if (czasPolski.getHour() == 3 && czasPolski.getMinute() == 0 && czasPolski.getSecond() == 0) {
+            if (polishTime.getHour() == 3 && polishTime.getMinute() == 0 && polishTime.getSecond() == 0) {
                 Config.INSTANCE.nextEntryTime = -1L;
                 Config.INSTANCE.onCooldown = false;
                 Config.save();
             }
 
             if(Config.INSTANCE.onCooldown) {
-                long czas = Config.INSTANCE.nextEntryTime - System.currentTimeMillis();
-                int dungeonyTimer = (int) czas/1000;
+                long time = Config.INSTANCE.nextEntryTime - System.currentTimeMillis();
+                int dungeonyTimer = (int) time/1000;
                 min = dungeonyTimer / 60;
                 sec = dungeonyTimer % 60;
 
-                if(System.currentTimeMillis() > Config.INSTANCE.nextEntryTime) {
-                    playDungeonSound();
-                    Chat.send(Text.literal("Cooldown na wejście do dungeonu skończył się!").formatted(Formatting.GREEN));
+                if(System.currentTimeMillis() >= Config.INSTANCE.nextEntryTime) {
+                    if(Config.INSTANCE.dungeonCooldownToggle) {
+                        playDungeonSound();
+                        Chat.send(Text.literal("Cooldown na wejście do dungeonu skończył się!").formatted(Formatting.GREEN));
+                    }
                     Config.INSTANCE.nextEntryTime = -1L;
                     Config.INSTANCE.onCooldown = false;
                     Config.save();

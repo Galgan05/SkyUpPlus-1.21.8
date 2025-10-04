@@ -15,6 +15,7 @@ public class Crates {
     private static String playerName;
 
     public static void crates() {
+
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if(!ServerRestrictor.isAllowed()) return;
 

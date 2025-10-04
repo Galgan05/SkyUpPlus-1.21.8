@@ -11,6 +11,7 @@ public class Fishing {
     public static boolean isFishing;
 
     public static void fishing() {
+
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if(!ServerRestrictor.isAllowed()) return;
 
