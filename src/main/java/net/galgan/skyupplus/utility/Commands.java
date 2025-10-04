@@ -8,6 +8,7 @@ import net.minecraft.client.MinecraftClient;
 public class Commands {
     public static void commands() {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
+            if(!ServerRestrictor.isAllowed()) return;
 
             dispatcher.register(ClientCommandManager.literal("sup").executes(ctx -> {
 

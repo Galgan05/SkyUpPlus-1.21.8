@@ -3,6 +3,7 @@ package net.galgan.skyupplus.features;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.galgan.skyupplus.config.Config;
+import net.galgan.skyupplus.utility.ServerRestrictor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 
@@ -11,6 +12,8 @@ public class Fishing {
 
     public static void fishing() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            if(!ServerRestrictor.isAllowed()) return;
+
             if (client.player == null) return;
 
             ItemStack mainHand = client.player.getMainHandStack();
@@ -20,6 +23,8 @@ public class Fishing {
         });
 
         ClientReceiveMessageEvents.GAME.register((message, overlay) -> {
+            if(!ServerRestrictor.isAllowed()) return;
+
             if (!overlay && message.getString().startsWith("Wędkarstwo » ")) {
                 if (message.getString().startsWith("Wędkarstwo » Wyłowiono: Niew")) {
                     Config.INSTANCE.niewielkaCount++;

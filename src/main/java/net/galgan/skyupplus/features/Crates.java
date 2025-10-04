@@ -3,6 +3,7 @@ package net.galgan.skyupplus.features;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.galgan.skyupplus.config.Config;
+import net.galgan.skyupplus.utility.ServerRestrictor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.text.Text;
@@ -15,6 +16,8 @@ public class Crates {
 
     public static void crates() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            if(!ServerRestrictor.isAllowed()) return;
+
             if (client.player == null) return;
 
             Text mainHand = client.player.getMainHandStack().getCustomName();
@@ -29,6 +32,8 @@ public class Crates {
         });
 
         ClientReceiveMessageEvents.GAME.register((message, overlay) -> {
+            if(!ServerRestrictor.isAllowed()) return;
+
             if (!overlay && message.getString().startsWith("SkyCase »")) {
                 MinecraftClient client = MinecraftClient.getInstance();
                 ClientPlayerEntity player = client.player;

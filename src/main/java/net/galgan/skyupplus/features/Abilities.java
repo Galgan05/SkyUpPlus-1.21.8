@@ -24,6 +24,8 @@ public class Abilities {
 
     public static void abilities() {
         ClientReceiveMessageEvents.GAME.register((message, overlay) -> {
+            if(!ServerRestrictor.isAllowed()) return;
+
             if (overlay) {
                 if (Config.INSTANCE.cooldownPlug && message.getString().startsWith("§6§lPrace §8§l» §e§aUmiejętność §6§c§lPług")) {
                     playMain();
@@ -47,6 +49,8 @@ public class Abilities {
         });
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            if(!ServerRestrictor.isAllowed()) return;
+
             if (client.player == null || client.inGameHud == null) return;
 
             BossBarHud hud = client.inGameHud.getBossBarHud();

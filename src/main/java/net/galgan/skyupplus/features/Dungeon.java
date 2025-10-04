@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.galgan.skyupplus.config.Config;
 import net.galgan.skyupplus.utility.Chat;
+import net.galgan.skyupplus.utility.ServerRestrictor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.sound.SoundCategory;
@@ -25,6 +26,8 @@ public class Dungeon {
         if (!Config.INSTANCE.dungeonCooldownToggle) return;
 
         ClientReceiveMessageEvents.GAME.register((message, overlay) -> {
+            if(!ServerRestrictor.isAllowed()) return;
+
             if (!overlay && message.getString().startsWith("Dungeon » Opuszczono Du")) {
                 Config.INSTANCE.nextEntryTime = System.currentTimeMillis() + 1800000;
                 Config.INSTANCE.onCooldown = true;
@@ -56,6 +59,8 @@ public class Dungeon {
         });
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            if(!ServerRestrictor.isAllowed()) return;
+
             if (client.player == null) return;
 
             ZonedDateTime czasPolski = ZonedDateTime.now(ZoneId.of("Europe/Warsaw"));

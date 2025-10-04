@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
 import net.galgan.skyupplus.config.Config;
 import net.galgan.skyupplus.utility.Chat;
+import net.galgan.skyupplus.utility.ServerRestrictor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -26,6 +27,7 @@ public class HUD {
     }
 
     public static void render(DrawContext context, RenderTickCounter counter) {
+        if(!ServerRestrictor.isAllowed()) return;
 
         if(Config.INSTANCE.toggleHud) {
             TextRenderer tr = MinecraftClient.getInstance().textRenderer;

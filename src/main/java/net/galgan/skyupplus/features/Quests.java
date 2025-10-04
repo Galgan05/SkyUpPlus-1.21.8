@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
 import net.galgan.skyupplus.config.Config;
 import net.galgan.skyupplus.mixin.HandledScreenAccess;
 import net.galgan.skyupplus.utility.Chat;
+import net.galgan.skyupplus.utility.ServerRestrictor;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.LoreComponent;
@@ -23,7 +24,10 @@ public class Quests {
     public static boolean isQuestActive;
 
     public static void quests() {
+
         ScreenEvents.BEFORE_INIT.register((client, screen, w, h) -> {
+            if(!ServerRestrictor.isAllowed()) return;
+
             //Check if you're inside a container that's valid
             if(!Config.INSTANCE.toggleQuests) return;
             if (!(screen instanceof HandledScreen<?> handled)) return;
@@ -72,6 +76,8 @@ public class Quests {
         });
 
         ClientReceiveMessageEvents.GAME.register((message, overlay) -> {
+            if(!ServerRestrictor.isAllowed()) return;
+
             if (!overlay && message.getString().startsWith("Wyzwania » Ukończono zadanie")) {
                 isQuestActive = false;
             }
