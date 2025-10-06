@@ -3,7 +3,7 @@ package net.galgan.skyupplus;
 import net.fabricmc.api.ClientModInitializer;
 import net.galgan.skyupplus.config.Config;
 import net.galgan.skyupplus.features.*;
-import net.galgan.skyupplus.hud.HUD;
+import net.galgan.skyupplus.hud.RenderHUD;
 import net.galgan.skyupplus.utility.Commands;
 import net.galgan.skyupplus.utility.ServerRestrictor;
 
@@ -20,6 +20,6 @@ public class SkyUpPlusClient implements ClientModInitializer {
         Abilities.abilities();
         Dungeon.dungeon();
         Crates.crates();
-        HUD.renderHUD();
+        RenderHUD.renderHUD();
 	}
 }

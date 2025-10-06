@@ -45,12 +45,14 @@ public class Fishing {
                 if (message.getString().startsWith("Wędkarstwo » Sprz")) {
                     String price = message.getString().split("za ")[1].split(" SC")[0];
                     price = price.replace(",", ".");
+                    price = price.replace(" ", "");
                     double earned = Double.parseDouble(price);
                     Config.INSTANCE.totalEarned += earned;
                 }
                 if (message.getString().startsWith("Wędkarstwo » Wyłowiono:")) {
                     String mass = message.getString().split(" \\(")[1].split("g, ")[0];
                     double weight = Double.parseDouble(mass);
+
                     Config.INSTANCE.totalWeight += weight;
 
                     if (weight > Config.INSTANCE.biggestWeight || Config.INSTANCE.biggestWeight == 0) Config.INSTANCE.biggestWeight = weight;

@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.galgan.skyupplus.config.Config;
 import net.galgan.skyupplus.mixin.BossBarHudAccessor;
+import net.galgan.skyupplus.utility.Chat;
 import net.galgan.skyupplus.utility.ServerRestrictor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.BossBarHud;

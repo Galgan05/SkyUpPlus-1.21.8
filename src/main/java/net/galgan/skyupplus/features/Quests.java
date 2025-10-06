@@ -89,24 +89,26 @@ public class Quests {
     }
 
     public static List<Text> loreFilter(LoreComponent questLore) {
-        List<Text> output = new ArrayList<>();
+        List<Text> filtered = new ArrayList<>();
         boolean addNext = false;
 
         for (Text line : questLore.lines()) {
             String s = line.getString().trim();
 
-            if (s.startsWith("▪")) {
-                if (s.startsWith("▪ Opis") || s.startsWith("▪ Za ukończenie") || s.startsWith("▪ LPM") || s.startsWith("▪ Uwaga") || s.startsWith("▪ Kategoria")) {
-                    addNext = false;
+            if (!s.isEmpty()) {
+                if (s.startsWith("▪")) {
+                    if (s.startsWith("▪ Opis") || s.startsWith("▪ Za ukończenie") || s.startsWith("▪ LPM") || s.startsWith("▪ Uwaga") || s.startsWith("▪ Kategoria")) {
+                        addNext = false;
+                    } else {
+                        filtered.add(line);
+                        addNext = true;
+                    }
                 } else {
-                    output.add(line);
-                    addNext = true;
+                    if (addNext) filtered.add(line);
                 }
-            } else {
-                if (addNext) output.add(line);
             }
         }
-        return output;
+        return filtered;
     }
 
     public static final Set<String> containerTitles = Set.of(
