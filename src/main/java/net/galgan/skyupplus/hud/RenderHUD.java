@@ -2,6 +2,7 @@ package net.galgan.skyupplus.hud;
 
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
+import net.galgan.skyupplus.config.Config;
 import net.galgan.skyupplus.utility.ServerRestrictor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -18,14 +19,16 @@ import java.util.List;
 
 public class RenderHUD {
 
-    public static int yOffsetLeft = 2;
-    public static int yOffsetRight = 2;
+    public static int yOffsetLeft = Config.INSTANCE.yOffsetLeft;
+    public static int yOffsetRight = Config.INSTANCE.yOffsetRight;
 
+    public static List<Text> notifficationsHUD = new ArrayList<>();
     public static List<Text> cooldownHUD = new ArrayList<>();
     public static List<Text> fishingHUD = new ArrayList<>();
     public static List<Text> elementiumHUD = new ArrayList<>();
     public static List<Text> platinumHUD = new ArrayList<>();
     public static List<Text> questsHUD = new ArrayList<>();
+    public static List<Text> scoreboardHUD = new ArrayList<>();
 
 
     public static void renderHUD() {
@@ -40,35 +43,62 @@ public class RenderHUD {
     public static void render(DrawContext context, RenderTickCounter counter) {
         if(!ServerRestrictor.isAllowed()) return;
 
+        NotifficationsHUD.generateBody();
         CooldownHUD.generateBody();
         FishingHUD.generateBody();
         PlatinumHUD.generateBody();
         ElementiumHUD.generateBody();
         QuestsHUD.generateBody();
+        ScoreboardHUD.generateBody();
 
+        if (!notifficationsHUD.isEmpty()) {
+            if (Config.INSTANCE.notifficationsHUDSide.mode().equals("left")) {
+                drawLeftBorderedText(context, yOffsetLeft, 0xFFAA00AA, "POWIADOMIENIA", notifficationsHUD);
+            } else if (Config.INSTANCE.notifficationsHUDSide.mode().equals("right")) {
+                drawRightBorderedText(context, yOffsetRight, 0xFFAA00AA, "POWIADOMIENIA", notifficationsHUD);
+            }
+        }
         if (!cooldownHUD.isEmpty()) {
-            drawLeftBorderedText(context, yOffsetLeft, 0xFFFF55FF, "COOLDOWN", cooldownHUD);
-            drawRightBorderedText(context, yOffsetRight, 0xFFFF55FF, "COOLDOWN", cooldownHUD);
+            if (Config.INSTANCE.cooldownHUDSide.mode().equals("left")) {
+                drawLeftBorderedText(context, yOffsetLeft, 0xFFFF5555, "COOLDOWN", cooldownHUD);
+            } else if (Config.INSTANCE.cooldownHUDSide.mode().equals("right")) {
+                drawRightBorderedText(context, yOffsetRight, 0xFFFF5555, "COOLDOWN", cooldownHUD);
+            }
         }
         if (!elementiumHUD.isEmpty()) {
-            drawLeftBorderedText(context, yOffsetLeft, 0xFF55FFFF, "ELEMENTIUM", elementiumHUD);
-            drawRightBorderedText(context, yOffsetRight, 0xFF55FFFF, "ELEMENTIUM", elementiumHUD);
+            if (Config.INSTANCE.elementiumHUDSide.mode().equals("left")) {
+                drawLeftBorderedText(context, yOffsetLeft, 0xFF55FFFF, "ELEMENTIUM", elementiumHUD);
+            } else if (Config.INSTANCE.elementiumHUDSide.mode().equals("right")) {
+                drawRightBorderedText(context, yOffsetRight, 0xFF55FFFF, "ELEMENTIUM", elementiumHUD);
+            }
         }
         if (!platinumHUD.isEmpty()) {
-            drawLeftBorderedText(context, yOffsetLeft, 0xFF55FF55, "PLATINUM", platinumHUD);
-            drawRightBorderedText(context, yOffsetRight, 0xFF55FF55, "PLATINUM", platinumHUD);
+            if (Config.INSTANCE.platinumHUDSide.mode().equals("left")) {
+                drawLeftBorderedText(context, yOffsetLeft, 0xFF55FF55, "PLATINUM", platinumHUD);
+            } else if (Config.INSTANCE.platinumHUDSide.mode().equals("right")) {
+                drawRightBorderedText(context, yOffsetRight, 0xFF55FF55, "PLATINUM", platinumHUD);
+            }
         }
         if (!fishingHUD.isEmpty()) {
-            drawLeftBorderedText(context, yOffsetLeft, 0xFF00AAAA, "RYBAK", fishingHUD);
-            drawRightBorderedText(context, yOffsetRight, 0xFF00AAAA, "RYBAK", fishingHUD);
+            if (Config.INSTANCE.fishingHUDSide.mode().equals("left")) {
+                drawLeftBorderedText(context, yOffsetLeft, 0xFF00AAAA, "RYBAK", fishingHUD);
+            } else if (Config.INSTANCE.fishingHUDSide.mode().equals("right")) {
+                drawRightBorderedText(context, yOffsetRight, 0xFF00AAAA, "RYBAK", fishingHUD);
+            }
         }
         if (!questsHUD.isEmpty()) {
-            drawLeftBorderedText(context, yOffsetLeft, 0xFFFFAA00, "ZADANIA", questsHUD);
-            drawRightBorderedText(context, yOffsetRight, 0xFFFFAA00, "ZADANIA", questsHUD);
+            if (Config.INSTANCE.questsHUDSide.mode().equals("left")) {
+                drawLeftBorderedText(context, yOffsetLeft, 0xFFFFAA00, "ZADANIA", questsHUD);
+            } else if (Config.INSTANCE.questsHUDSide.mode().equals("right")) {
+                drawRightBorderedText(context, yOffsetRight, 0xFFFFAA00, "ZADANIA", questsHUD);
+            }
+        }
+        if (!scoreboardHUD.isEmpty() && Config.INSTANCE.toggleScoreboard) {
+            drawScoreboard(context, 0xFFFFFF55, scoreboardHUD);
         }
 
-        yOffsetLeft = 2;
-        yOffsetRight = 2;
+        yOffsetLeft = Config.INSTANCE.yOffsetLeft;
+        yOffsetRight = Config.INSTANCE.yOffsetRight;
     }
 
 
@@ -189,5 +219,60 @@ public class RenderHUD {
         }
 
         yOffsetRight = y + 4;
+    }
+
+    public static void drawScoreboard(DrawContext context, int color, List<Text> body) {
+        TextRenderer tr = MinecraftClient.getInstance().textRenderer;
+
+        int textHeight = 0;
+        int textWidth = 0;
+        int shadowColor = (color & 0xFCFCFC) >> 2 | (color & 0xFF000000);
+
+        for(Text line : body) {
+            textHeight += tr.fontHeight + 2;
+            if (tr.getWidth(line) > textWidth) {
+                textWidth = tr.getWidth(line);
+            }
+        }
+
+        int x = context.getScaledWindowWidth() - textWidth - 8;
+        int y = (context.getScaledWindowHeight() - textHeight - 8) / 2;
+
+        if (context.getScaledWindowHeight() != Config.INSTANCE.screenHeight) {
+            Config.INSTANCE.screenHeight = context.getScaledWindowHeight();
+            Config.save();
+        }
+
+        context.fill(
+                x + 1,
+                y + 1,
+                x + textWidth + 4,
+                y + textHeight + 2,
+                0x80000000
+        );
+
+        context.drawBorder(
+                x + 1,
+                y + 1,
+                textWidth + 5,
+                textHeight + 3,
+                shadowColor
+        );
+
+        context.drawBorder(
+                x,
+                y,
+                textWidth + 5,
+                textHeight + 3,
+                color
+        );
+
+        x += 3;
+        y += 3;
+
+        for(Text line : body) {
+            context.drawTextWithShadow(tr, line, x, y,0xFFFFFFFF);
+            y += tr.fontHeight + 2;
+        }
     }
 }

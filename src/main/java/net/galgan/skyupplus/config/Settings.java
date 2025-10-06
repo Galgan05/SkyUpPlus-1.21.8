@@ -25,7 +25,8 @@ public final class Settings {
         ConfigEntryBuilder eb = builder.entryBuilder();
 
         ConfigCategory hud = builder.getOrCreateCategory(Text.literal("HUD").formatted(Formatting.GREEN, Formatting.BOLD));
-        ConfigCategory zadania = builder.getOrCreateCategory(Text.literal("Zadania").formatted(Formatting.GOLD, Formatting.BOLD));
+        ConfigCategory notiffications = builder.getOrCreateCategory(Text.literal("Powiadomienia").formatted(Formatting.DARK_PURPLE, Formatting.BOLD));
+        ConfigCategory quests = builder.getOrCreateCategory(Text.literal("Zadania").formatted(Formatting.GOLD, Formatting.BOLD));
         ConfigCategory fishing = builder.getOrCreateCategory(Text.literal("Rybak").formatted(Formatting.DARK_AQUA, Formatting.BOLD));
         ConfigCategory abilities = builder.getOrCreateCategory(Text.literal("Umiejętności").formatted(Formatting.LIGHT_PURPLE, Formatting.BOLD));
         ConfigCategory dungeon = builder.getOrCreateCategory(Text.literal("Dungeony").formatted(Formatting.GRAY, Formatting.BOLD));
@@ -44,36 +45,128 @@ public final class Settings {
         );
 
         hud.addEntry(
-                eb.startIntField(Text.literal("Przesunięcie w poziomie"), Config.INSTANCE.offsetX)
-                        .setDefaultValue(5)
+                eb.startBooleanToggle(Text.literal("Wyświetlanie customowej tablicy"), Config.INSTANCE.toggleScoreboard)
+                        .setDefaultValue(true)
                         .setTooltip(
-                                Text.literal("Przesunięcie w poziomie").formatted(Formatting.WHITE, Formatting.BOLD),
-                                Text.literal("Przesuwa wyświetlanie HUDu w poziomie (0-512px)").formatted(Formatting.GRAY)
+                                Text.literal("Wyświetlanie customowej tablicy").formatted(Formatting.WHITE, Formatting.BOLD),
+                                Text.literal("Włącza/Wyłącza wyświetlanie customowej tablicy").formatted(Formatting.GRAY),
+                                Text.literal("UWAGA! Wpisz /sboard jeżeli nie widzisz żadnej tablicy").formatted(Formatting.RED)
                         )
-                        .setSaveConsumer(v -> {
-                            if (v < 0) v = 0;
-                            if (v > 512) v = 512;
-                            Config.INSTANCE.offsetX = v;
-                        })
+                        .setSaveConsumer(v -> Config.INSTANCE.toggleScoreboard = v)
                         .build()
         );
 
         hud.addEntry(
-                eb.startIntField(Text.literal("Przesunięcie w pionie"), Config.INSTANCE.offsetY)
-                        .setDefaultValue(5)
+                eb.startIntSlider(Text.literal("Przesunięcie w pionie z lewej strony"), Config.INSTANCE.yOffsetLeft, 0, Config.INSTANCE.screenHeight)
+                        .setDefaultValue(2)
                         .setTooltip(
-                                Text.literal("Przesunięcie w pionie").formatted(Formatting.WHITE, Formatting.BOLD),
-                                Text.literal("Przesuwa wyświetlanie HUDu w pionie (0-256px)").formatted(Formatting.GRAY)
+                                Text.literal("Przesunięcie w pionie z lewej strony").formatted(Formatting.WHITE, Formatting.BOLD),
+                                Text.literal("Przesuwa w pionie wyświetlanie HUDu z lewej strony ekranu").formatted(Formatting.GRAY)
                         )
-                        .setSaveConsumer(v -> {
-                            if (v < 0) v = 0;
-                            if (v > 256) v = 256;
-                            Config.INSTANCE.offsetY = v;
-                        })
+                        .setSaveConsumer(v -> Config.INSTANCE.yOffsetLeft = v)
                         .build()
         );
 
-        zadania.addEntry(
+        hud.addEntry(
+                eb.startIntSlider(Text.literal("Przesunięcie w pionie z prawej strony"), Config.INSTANCE.yOffsetRight, 0, Config.INSTANCE.screenHeight)
+                        .setDefaultValue(2)
+                        .setTooltip(
+                                Text.literal("Przesunięcie w pionie z prawej strony").formatted(Formatting.WHITE, Formatting.BOLD),
+                                Text.literal("Przesuwa w pionie wyświetlanie HUDu z prawej strony ekranu").formatted(Formatting.GRAY)
+                        )
+                        .setSaveConsumer(v -> Config.INSTANCE.yOffsetRight = v)
+                        .build()
+        );
+
+        var chosseDisplaySide = eb.startSubCategory(Text.literal("Wybierz z której strony wyświetlać HUD")).setExpanded(true);
+
+        chosseDisplaySide.add(
+                eb.startEnumSelector(Text.literal("Powiadomienia"), Config.NotifficationsHUDSide.class, Config.INSTANCE.notifficationsHUDSide)
+                        .setDefaultValue(Config.NotifficationsHUDSide.LEFT)
+                        .setTooltip(
+                                Text.literal("Powiadomienia").formatted(Formatting.WHITE, Formatting.BOLD),
+                                Text.literal("Wybiera z której strony ekranu wyświetlić HUD powiadomień").formatted(Formatting.GRAY)
+                        )
+                        .setEnumNameProvider(e -> Text.literal(((Config.NotifficationsHUDSide) e).label()))
+                        .setSaveConsumer(v -> Config.INSTANCE.notifficationsHUDSide = v)
+                        .build()
+        );
+
+        chosseDisplaySide.add(
+                eb.startEnumSelector(Text.literal("Cooldown"), Config.CooldownHUDSide.class, Config.INSTANCE.cooldownHUDSide)
+                        .setDefaultValue(Config.CooldownHUDSide.LEFT)
+                        .setTooltip(
+                                Text.literal("Cooldown").formatted(Formatting.WHITE, Formatting.BOLD),
+                                Text.literal("Wybiera z której strony ekranu wyświetlić HUD cooldownu").formatted(Formatting.GRAY)
+                        )
+                        .setEnumNameProvider(e -> Text.literal(((Config.CooldownHUDSide) e).label()))
+                        .setSaveConsumer(v -> Config.INSTANCE.cooldownHUDSide = v)
+                        .build()
+        );
+
+        chosseDisplaySide.add(
+                eb.startEnumSelector(Text.literal("Elementium"), Config.ElementiumHUDSide.class, Config.INSTANCE.elementiumHUDSide)
+                        .setDefaultValue(Config.ElementiumHUDSide.LEFT)
+                        .setTooltip(
+                                Text.literal("Elementium").formatted(Formatting.WHITE, Formatting.BOLD),
+                                Text.literal("Wybiera z której strony ekranu wyświetlić HUD elementium").formatted(Formatting.GRAY)
+                        )
+                        .setEnumNameProvider(e -> Text.literal(((Config.ElementiumHUDSide) e).label()))
+                        .setSaveConsumer(v -> Config.INSTANCE.elementiumHUDSide = v)
+                        .build()
+        );
+
+        chosseDisplaySide.add(
+                eb.startEnumSelector(Text.literal("Platinum"), Config.PlatinumHUDSide.class, Config.INSTANCE.platinumHUDSide)
+                        .setDefaultValue(Config.PlatinumHUDSide.LEFT)
+                        .setTooltip(
+                                Text.literal("Platinum").formatted(Formatting.WHITE, Formatting.BOLD),
+                                Text.literal("Wybiera z której strony ekranu wyświetlić HUD platinum").formatted(Formatting.GRAY)
+                        )
+                        .setEnumNameProvider(e -> Text.literal(((Config.PlatinumHUDSide) e).label()))
+                        .setSaveConsumer(v -> Config.INSTANCE.platinumHUDSide = v)
+                        .build()
+        );
+
+        chosseDisplaySide.add(
+                eb.startEnumSelector(Text.literal("Rybak"), Config.FishingHUDSide.class, Config.INSTANCE.fishingHUDSide)
+                        .setDefaultValue(Config.FishingHUDSide.LEFT)
+                        .setTooltip(
+                                Text.literal("Rybak").formatted(Formatting.WHITE, Formatting.BOLD),
+                                Text.literal("Wybiera z której strony ekranu wyświetlić HUD rybaka").formatted(Formatting.GRAY)
+                        )
+                        .setEnumNameProvider(e -> Text.literal(((Config.FishingHUDSide) e).label()))
+                        .setSaveConsumer(v -> Config.INSTANCE.fishingHUDSide = v)
+                        .build()
+        );
+
+        chosseDisplaySide.add(
+                eb.startEnumSelector(Text.literal("Zadania"), Config.QuestsHUDSide.class, Config.INSTANCE.questsHUDSide)
+                        .setDefaultValue(Config.QuestsHUDSide.LEFT)
+                        .setTooltip(
+                                Text.literal("Zadania").formatted(Formatting.WHITE, Formatting.BOLD),
+                                Text.literal("Wybiera z której strony ekranu wyświetlić HUD zadań").formatted(Formatting.GRAY)
+                        )
+                        .setEnumNameProvider(e -> Text.literal(((Config.QuestsHUDSide) e).label()))
+                        .setSaveConsumer(v -> Config.INSTANCE.questsHUDSide = v)
+                        .build()
+        );
+
+        hud.addEntry(chosseDisplaySide.build());
+
+        notiffications.addEntry(
+                eb.startBooleanToggle(Text.literal("Nowe zadanie dzienne"), Config.INSTANCE.toggleDaily)
+                        .setDefaultValue(false)
+                        .setTooltip(
+                                Text.literal("Nowe zadanie dzienn").formatted(Formatting.WHITE, Formatting.BOLD),
+                                Text.literal("Wyświetla powiadomienie, jeżeli dostępne jest nowe zadanie dzienne").formatted(Formatting.GRAY),
+                                Text.literal("To powiadomienie zniknie kiedy wybierzesz zadanie dzienne pod /zadania").formatted(Formatting.GRAY)
+                        )
+                        .setSaveConsumer(v -> Config.INSTANCE.toggleDaily = v)
+                        .build()
+        );
+
+        quests.addEntry(
                 eb.startBooleanToggle(Text.literal("Wyświetlanie zadań"), Config.INSTANCE.toggleQuests)
                         .setDefaultValue(true)
                         .setTooltip(
@@ -88,7 +181,7 @@ public final class Settings {
                         .build()
         );
 
-        zadania.addEntry(
+        quests.addEntry(
                 eb.startBooleanToggle(Text.literal("Automatyczne zamykanie zadań"), Config.INSTANCE.closeQuests)
                         .setDefaultValue(true)
                         .setTooltip(

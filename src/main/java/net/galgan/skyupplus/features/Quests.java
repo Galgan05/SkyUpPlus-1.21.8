@@ -28,16 +28,16 @@ public class Quests {
         ScreenEvents.BEFORE_INIT.register((client, screen, w, h) -> {
             if(!ServerRestrictor.isAllowed()) return;
 
-            //Check if you're inside a container that's valid
+
             if(!Config.INSTANCE.toggleQuests) return;
             if (!(screen instanceof HandledScreen<?> handled)) return;
             if (!containerTitles.contains(handled.getTitle().getString())) return;
 
-            // Register per-screen listeners
+
             ScreenMouseEvents.beforeMouseClick(screen).register((s, mouseX, mouseY, button) -> {
-                //Check if the button clicked was a middle button
+
                 if (button != 2) return;
-                //Check if you clicked a valid slot
+
                 Slot slot = getSlotAt(handled, mouseX, mouseY);
                 if (slot == null) {
                     questName = null;
@@ -45,7 +45,7 @@ public class Quests {
                     isQuestActive = false;
                     return;
                 }
-                //Check if the quest is valid
+
                 LoreComponent questLore = slot.getStack().get(DataComponentTypes.LORE);
 
                 if (questLore == null) {
@@ -54,23 +54,33 @@ public class Quests {
                     isQuestActive = false;
                     return;
                 }
-                if (completedLore.equals(questLore.toString())) {
-                    questName = null;
-                    filteredDescription = null;
-                    isQuestActive = false;
-                    return;
+
+                for(Text line : questLore.lines()) {
+                    if (line.getString().startsWith("▪ Zadanie ukończone!")) {
+                        questName = null;
+                        filteredDescription = null;
+                        isQuestActive = false;
+                        return;
+                    }
                 }
+
                 if (!questNames.contains(slot.getStack().getName().getString())) {
                     questName = null;
                     filteredDescription = null;
                     isQuestActive = false;
                     return;
                 }
-                //If every check passed, print out the name of the quest
+
                 isQuestActive = true;
                 questName = slot.getStack().getName();
+
+                if (questName.getString().equals("» Zadanie codzienne «")) {
+                    Config.INSTANCE.seenTodaysDaily = true;
+                    Config.save();
+                }
+
                 Chat.send(Text.empty().append(Text.literal("Wybrano zadanie: ").formatted(Formatting.DARK_AQUA)).append(questName));
-                //Get the filtered description of the quest
+
                 filteredDescription = loreFilter(questLore);
             });
         });
@@ -336,6 +346,4 @@ public class Quests {
             "» Imiennik «",
             "» Zadanie codzienne «"
     );
-
-    public static final String completedLore = "LoreComponent[lines=[empty, empty[siblings=[literal{▪ }[style={color=dark_gray,bold,!italic,!underlined,!strikethrough,!obfuscated}], literal{Zadanie ukończone!}[style={color=green,!bold,!italic}]]], empty], styledLines=[empty[style={color=dark_purple,italic}], empty[style={color=dark_purple,italic}, siblings=[literal{▪ }[style={color=dark_gray,bold,!italic,!underlined,!strikethrough,!obfuscated}], literal{Zadanie ukończone!}[style={color=green,!bold,!italic}]]], empty[style={color=dark_purple,italic}]]]";
 }

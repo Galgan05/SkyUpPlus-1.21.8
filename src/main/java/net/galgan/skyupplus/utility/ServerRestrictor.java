@@ -5,7 +5,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 public class ServerRestrictor {
     private static boolean allowedServer = false;
 
-    public static void init() {
+    public static void serverRestrictor() {
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
             String address = handler.getConnection().getAddress().toString();
             allowedServer = address.contains("skyup.pl");

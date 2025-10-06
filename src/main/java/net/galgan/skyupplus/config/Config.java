@@ -9,16 +9,152 @@ import net.minecraft.sound.SoundEvents;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 public class Config {
     //HUD
     public boolean toggleHud = true;
-    public int offsetY = 5;
-    public int offsetX = 5;
+    public boolean toggleScoreboard = true;
+    public int yOffsetLeft = 2;
+    public int yOffsetRight = 2;
+    public int screenHeight = 256;
+
+    public NotifficationsHUDSide notifficationsHUDSide = NotifficationsHUDSide.LEFT;
+    public CooldownHUDSide cooldownHUDSide = CooldownHUDSide.LEFT;
+    public ElementiumHUDSide elementiumHUDSide = ElementiumHUDSide.LEFT;
+    public PlatinumHUDSide platinumHUDSide = PlatinumHUDSide.LEFT;
+    public FishingHUDSide fishingHUDSide = FishingHUDSide.LEFT;
+    public QuestsHUDSide questsHUDSide = QuestsHUDSide.LEFT;
+
+    public enum NotifficationsHUDSide {
+        LEFT("Z lewej", "left"),
+        RIGHT("Z prawej", "right");
+
+        private final String label;
+        private final String mode;
+
+        NotifficationsHUDSide(String label, String mode) {
+            this.label = label;
+            this.mode = mode;
+        }
+
+        public String label() {
+            return label;
+        }
+        public String mode() {
+            return mode;
+        }
+    }
+
+    public enum CooldownHUDSide {
+        LEFT("Z lewej", "left"),
+        RIGHT("Z prawej", "right");
+
+        private final String label;
+        private final String mode;
+
+        CooldownHUDSide(String label, String mode) {
+            this.label = label;
+            this.mode = mode;
+        }
+
+        public String label() {
+            return label;
+        }
+        public String mode() {
+            return mode;
+        }
+    }
+
+    public enum ElementiumHUDSide {
+        LEFT("Z lewej", "left"),
+        RIGHT("Z prawej", "right");
+
+        private final String label;
+        private final String mode;
+
+        ElementiumHUDSide(String label, String mode) {
+            this.label = label;
+            this.mode = mode;
+        }
+
+        public String label() {
+            return label;
+        }
+        public String mode() {
+            return mode;
+        }
+    }
+
+    public enum PlatinumHUDSide {
+        LEFT("Z lewej", "left"),
+        RIGHT("Z prawej", "right");
+
+        private final String label;
+        private final String mode;
+
+        PlatinumHUDSide(String label, String mode) {
+            this.label = label;
+            this.mode = mode;
+        }
+
+        public String label() {
+            return label;
+        }
+        public String mode() {
+            return mode;
+        }
+    }
+
+    public enum FishingHUDSide {
+        LEFT("Z lewej", "left"),
+        RIGHT("Z prawej", "right");
+
+        private final String label;
+        private final String mode;
+
+        FishingHUDSide(String label, String mode) {
+            this.label = label;
+            this.mode = mode;
+        }
+
+        public String label() {
+            return label;
+        }
+        public String mode() {
+            return mode;
+        }
+    }
+
+    public enum QuestsHUDSide {
+        LEFT("Z lewej", "left"),
+        RIGHT("Z prawej", "right");
+
+        private final String label;
+        private final String mode;
+
+        QuestsHUDSide(String label, String mode) {
+            this.label = label;
+            this.mode = mode;
+        }
+
+        public String label() {
+            return label;
+        }
+        public String mode() {
+            return mode;
+        }
+    }
 
     //QUESTS
     public boolean toggleQuests = true;
     public boolean closeQuests = true;
+
+    //NOTIFFICATIONS
+    public boolean toggleDaily = false;
+    public boolean seenTodaysDaily = false;
+    public int currentDay = ZonedDateTime.now(ZoneId.of("Europe/Warsaw")).getDayOfYear();
 
     //CRATES
     public boolean karambitToggle = true;

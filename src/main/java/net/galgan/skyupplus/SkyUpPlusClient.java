@@ -13,13 +13,15 @@ public class SkyUpPlusClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
         Config.load();
-        ServerRestrictor.init();
+        ServerRestrictor.serverRestrictor();
         Commands.commands();
         Quests.quests();
         Fishing.fishing();
         Abilities.abilities();
         Dungeon.dungeon();
         Crates.crates();
+        Notiffications.notiffications();
+        Scoreboard.scoreboard();
         RenderHUD.renderHUD();
 	}
 }
