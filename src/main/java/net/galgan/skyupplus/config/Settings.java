@@ -812,7 +812,7 @@ public final class Settings {
         );
 
         elementiumDrops.add(
-                eb.startBooleanToggle(Text.literal("StatTracket"), Config.INSTANCE.statTrackerToggle)
+                eb.startBooleanToggle(Text.literal("StatTracker"), Config.INSTANCE.statTrackerToggle)
                         .setDefaultValue(false)
                         .setTooltip(
                                 Text.literal("StatTracker").formatted(Formatting.WHITE, Formatting.BOLD),
